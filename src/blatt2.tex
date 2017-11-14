@@ -10,6 +10,72 @@
 
 \exercise{Dominierende Mengen}
 
+Wir gehen dabei ähnlich vor, wie beim FPT-Algorithmus für Independent Set aus der Vorlesung.
+
+Wir nehmen an, dass die Aufgabenstellung nur wissen möchte, ob es ein Connected Dominating Set der Größe $k$ gibt. Weiterhin nehmen wir an, dass wir nur Zusammenhängende Graphen betrachten.
+Diese Eigenschaft können wir leicht in $\Theta(m)$ mit einer Breitensuche sicherstellen.
+Die Baumzerlegung ist als schöne Baumzerlegung vorliegend.
+
+Der einzige Unterschied zum Algorithmus aus der Vorlesung besteht darin, wie wir die Regeln für Introduce, Forget und Join Knoten wählen.
+
+Für Introduce Regeln gehen wir wie folgt vor (Beispiel von Folie 4, 3.Vorlesung):
+
+\begin{center}
+\begin{tabular}{c c c c c c c c}
+    $\emptyset$ & $\{4\}$ & $\{5\}$ & $\{6\}$ & $\{4,5\}$ &$\{4,6\}$ &$\{5,6\}$ &$\{4,5,6\}$\\
+    $\infty$ & 2 & 2 & $\infty$ & 3 & 3 & 3 & 4\\
+\end{tabular}
+\end{center}
+
+wird zu
+
+\begin{center}
+\begin{tabular}{c c c c}
+    $\emptyset$ & $\{4\}$ & $\{6\}$ & $\{4,6\}$\\
+    $\infty$ & 2 & 3 & 3\\
+\end{tabular}
+\end{center}
+
+wobei sich der Eintrag für 4 aus dem Minimum von $\{4\}$ und $\{4,5\}$,
+für 6 aus dem Minimum von $\{6\}$ und $\{5,6\}$, sowie für $\{4,6\}$ aus dem Minimum von $\{4,6\}$ und $\{4,5,6\}$ berechnet.
+Der Eintrag für $\emptyset$ kommt von $\{6\}$.
+
+Für introduce Knoten gehen wir wie folgt vor:
+
+\begin{center}
+\begin{tabular}{c c c c}
+    $\emptyset$ & $\{4\}$ & $\{6\}$ & $\{4,6\}$\\
+    $\infty$ & 2 & 3 & 3\\
+\end{tabular}
+\end{center}
+
+wird nach Hinzufügen von $\{7\}$ zu
+
+\begin{center}
+\begin{tabular}{c c c c c c c c}
+    $\emptyset$ & $\{4\}$ & $\{7\}$ & $\{6\}$ & $\{4,7\}$ &$\{4,6\}$ &$\{7,6\}$ &$\{4,7,6\}$\\
+    $\infty$ & 2 & $\infty$ & $\infty$ & 3 & 3 & $\infty$ & 4\\
+\end{tabular}
+\end{center}
+
+Da 7 keine Verbindung zu 6 hat, kann also 6 oder 7 alleine nicht funktionieren. Auch $\{7,6\}$ kann nicht funktionieren, da 4 7 vom Rest separiert. ($\{4,6\}$ ist ein Seperator für 7)
+
+Ein Sonderfall kann noch auftreten, dafür Betrachten wir den grünen Teil des Graphen auf Folien 8 und 9 , Vorlesung 3.
+Beim Schritt von $\{U,n\}$ zu $\{U,5,n\}$ tritt der Fall ein, dass weder $U$ noch $n$ mit 5 verbunden sind. Nach der obigen Berechnung würde dann überall $\infty$ stehen.
+Damit die Ergebnisse brauchbar bleiben, ignorieren wir hier die \emph{Connected}-Eigenschaft und berechnen nur ein Dominating Set. Wir tun also so, als ob 5 mit beiden anderen Knoten verbunden wäre und berechnen die Werte entsprechend.
+Das Ganze funktioniert deshalb, weil 5 anschließend mit einem anderen Strang verjoined wird, welcher 5 mit einem der anderen Knoten verbinden kann.
+
+Solch ein Join Knoten muss in der schönen Baumzerlegung immer existieren, da der Graph zusammenhängend ist.
+Betrachten wir den Fall, dass ein Knoten $x$ introduced wird, der keine Verbindung zu den Knoten in seinem Bag $B = \{x, b_1, \dots , b_n\}$ hat.
+Dann muss es einen Pfad $\{x, k_1, \dots, k_i, b_k\}$ geben, der $x$ mit einem der Knoten aus $B$ verbindet (weil der Graph zusammenhängend ist).
+
+Die Knoten $\{k_1, \dots, k_i\}$ können bisher in keinem Unterknoten von $B$ aufgetaucht sein, da $B$ ein Seperator ist. Falls einer der Knoten aufgetaucht wäre, könnten nicht mehr alle Verbindungen durch Bags abgedeckt werden, da $x$ grade introduced wurde. (Und in einer schönen Baumzerlegung wird jeder Knoten auf dem Pfad zur Wurzel max 1 mal introduced)
+
+D.h. es muss noch einen zweiten Ast des Baumes geben, auf dem dann die Knoten des Pfades abgearbeitet werden. Dort befinden sich dann auch $x$ und $b_k$ irgendwann in einem Bag. Damit die Teilbaum Eigenschaft erhalten bleibt müssen $x$ und $b_k$ also an einem Join beteiligt sein. Demnach werden $B$ und $B_2$ bzw darüberliegende Bags verjoined.
+
+Bleibt also nur noch die Vorgehensweise eines Joins zu beschreiben. Das passiert identisch zum Algorithmus aus der Vorlesung.
+D.h. der neue Wert einer Menge berechnet sich aus der Addition der alten Werte minus der Kardinalität.
+
 \exercise{Baumweite planarer Graphen}
 
 \end{document}
