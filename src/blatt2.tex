@@ -8,6 +8,27 @@
 
 \exercise{Punkte und Geraden}
 
+Zunächst wird das Problem unter Verwendung der folgenden Reduktionsregel auf einen Kern reduziert:
+
+\textbf{Reduktionsregel 1:}
+\begin{itemize}
+\item suche eine Gerade $g$, die mindestens $k+1$ Punkte abdeckt und füge $g$ zur \mbox{\textsc{Geradenüberdeckung}} hinzu
+\item lösche alle von $g$ abgedeckten Punkte aus $P$ und reduziere $k$ um 1
+\end{itemize}
+Diese Reduktionsregel ist sicher. Angenommen die Instanz $I$ sei gegeben und $I$ sei vor der Reduktion lösbar. Würde man $g$ nicht zur \textsc{Geradenüberdeckung} hinzufügen, müsste man jeden der Punkte, die von $g$ abgedeckt werden, durch eine eigene Gerade abdecken. Da $g$ mindestens $k+1$ Punkte abdeckt, würden dafür alleine also wenigstens $k+1$ Geraden benötigt werden, die Größe der \textsc{Geradenüberdeckung} könnte also nicht mehr eine Größe ${\leq}k$ haben.
+
+Diese Regel wird solange angewendet, wie möglich. Beinhaltet der danach verbleibende Kern mehr als $k^2$ Knoten, ist keine \textsc{Geradenüberdeckung} mit maximal $k$ Geraden mehr möglich. Grund dafür ist, dass mit den verbleibenden $k$ Geraden je maximal $k$ Punkte abgedeckt werden (sonst könnte Reduktionsregel 1 erneut angewendet werden). Insgesamt können mit den $k$ verbleibenden Geraden also maximal $k^2$ Punkte abgedeckt werden.
+
+Dieses Kernproblem der Größe $O(k^2)$ kann nun mittels Brute-Force gelöst werden.
+
+Für den Test, ob es eine Gerade $g$ gibt, die mindestens $k+1$ Punkte abdeckt, wird für jedes Paar von Punkten ($O(n^2)$) geprüft wie viele Punkte die Gerade, die diese beiden Punkte verbindet, abdeckt. Dafür muss potentiell pro Gerade für jeden der verbleibenden $n-2$ Punkte entschieden werden, ob er auf der Gerade liegt oder nicht. Falls er auf der Geraden liegt, wird der Wert, der sich merkt, wie viele Punkte auf einer Geraden liegen, inkrementiert. Ein Reduktionsschritt liegt damit in $O(n^3)$.
+
+Die Reduktionsregel wird maximal $k$ mal angewendet, da nach jeder Anwendung $k$ um 1 reduziert wird. Falls $k$ auf 0 fällt, hat man die \textsc{Geradenüberdeckung} gefunden, falls kein Knoten mehr übrig bleibt. Die Kernbildung liegt also insgesamt in $O(k*n^3)$, und da $k{\leq}n$ gilt, liegt sie insbesondere in $O(n^4)$.
+
+Das Kernproblem wird mittels Brute-Force gelöst. Dafür werden zunächst alle möglichen Geraden gebildet, indem jedes Knotenpaar eine Gerade darstellt. Da es maximal noch $k^2$ Knoten gibt, liegt die Anzahl der Geraden in $O(k^4)$. Für jede dieser Geraden kann (wie bereits oben beschrieben) wieder überprüft werden, welche Punkte auf ihr liegen. Neben der Anzahl der abgedeckten Punkte ist hier vor allem interessant, welche Punkte genau abgedeckt werden. Dazu kann pro Gerade eine Bitmap der Größe $=k^2$ gespeichert werden, die mit 1 markiert wird, wenn ein Punkt von der Gerade abgedeckt wird. Das Erstellen einer Bitmap liegt in $O(k^2)$, da jeder Punkt geprüft wird. Da es $k^4$ Geraden gibt, liegt die Erzeugung aller Bitmaps in $O(k^6)$. Nun wird für jede Teilmenge aller Geraden geprüft, ob diese Teilmenge alle verbleibenden Punkte abdeckt. Insgesamt gibt es potentiell $2^{k^4}$ Teilmengen. Der Test, ob nun alle Punkte abgedeckt werden kann mithilfe der Bitmaps in $O(k^3)$ erledigt werden, da pro Bitmap maximal $k^2$ Werte gespeichert werden und maximal $k$ Geraden noch verwendet werden können. Der gesamte Brute-Froce Schritt liegt damit in $O(k^6+k^3*2^{k^4})$.
+
+Der gesamte Algorithmus liegt damit in $O(k^6+k^3*2^{k^4}+n^4)$ und ist damit $\in FPT$.
+
 \exercise{Dominierende Mengen}
 
 Wir gehen dabei ähnlich vor, wie beim FPT-Algorithmus für Independent Set aus der Vorlesung.
