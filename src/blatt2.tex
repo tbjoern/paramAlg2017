@@ -99,4 +99,31 @@ D.h. der neue Wert einer Menge berechnet sich aus der Addition der alten Werte m
 
 \exercise{Baumweite planarer Graphen}
 
+Die Grundidee besteht darin, das Planar Seprarator Theorem rekursiv anzuwenden, um den Graph in immer kleinere Teile zu zerteilen, bis die Teile alle kleiner als $\sqrt{n}$ sind.
+
+Z.B. nach 2-maliger Rekursion:
+
+<graph hier>
+
+Dabei hat nach Aussage des Theorems die Menge $S_0$ die Größe $|S_0| \leq 4\sqrt{n}$, sowie $|S_l|,|S_r| \leq 4\sqrt{\frac{2}{3}n}$
+Wenn wir nun einfach alle $S_i$ zu eigenen Bags machen, haben wir schon fast eine Baumzerlegung, die Baumweite in $\Theta(\sqrt{n})$ hat.
+Wir müssen nur noch die Eigenschaft erfüllen, dass Knoten die Kanten zueinander haben auch zusammen in einem Bag auftauchen. Das ist momentan noch nicht gegeben, da die Seperatoren i.Allg. mit den jeweiligen $V_k$ verbunden sind.
+
+Dazu schauen wir uns einmal in unserem oberen Graphen einen Pfad von einem $S_i$ zur Wurzel $S_0$ an. Sei der Pfad als $\{S_i, S_{i-1}, \dots, S_0\}$ gegeben.
+Wir wählen dann das entsprechende Bag für $S_k$ als $B_k = \bigcup\limits_{i=0}^k S_i$. Dabei setzen wir die Bags für $S_{kl}$ und $S_{kr}$ als Kinder des Bags $B_k$, sowie das Bag $B_k$ als Kind von $B_{k-1}$.
+Die Größe des Bags $B_k$ berechnet sich als
+$$ |B_k| = \sum\limits_{i=0}^k |S_k| = \sum\limits_{i=0}^k \left(4\sqrt{n}\sqrt{\frac{2}{3}^i}\right) = 4\sqrt{n}\sum\limits_{i=0}^k \sqrt{\frac{2}{3}^i}$$
+
+$$ \sum\limits_{i=0}^k \sqrt{\frac{2}{3}^i} \leq \sum\limits_{i=0}^{\infty} \sqrt{\frac{2}{3}^i} = \frac{1}{1 - \frac{1}{3}} = \frac{3}{2}$$
+
+$$ 4\sqrt{n}\sum\limits_{i=0}^k \sqrt{\frac{2}{3}^i} \leq 4\sqrt{n} \frac{3}{2} = 6\sqrt{n}$$
+
+$\Rightarrow B_k \leq 6\sqrt{n}$ für alle $k$
+
+Mit dieser Wahl der Bags können wir nun garantieren, dass es für jedes verbundene Knotenpaar ein Bag gibt in dem beide Knoten auftauchen.
+Das liegt daran, dass jeder Knoten aus $V_l$ bzw $V_r$ in einem Bag landet, welches alle Knoten aus $S$ und den Vorgängern von $S$ beinhaltet. Knoten aus $V_l, V_r$ haben nur interne Verbindungen oder Verbindungen zu $S$ oder den Vorgängern von $S$, sonst nirgends anders hin - so haben wir die Seperatoren schließlich gewählt.
+
+Also haben wir nun eine Baumzerlegung, die alle Knoten abdeckt, bei der verbundene Knoten zusammen in einem Bag auftauchen und bei dem die Bags eines Knotens einen Teilbaum ergeben. Letzteres folgt daraus, dass wir Knoten auf dem Weg zu den Blättern nur zu Bags hinzufügen und die vorige Eigenschaft erfüllt ist.
+
+Die Baumzerlegung ist damit gültig und hat eine Baumweite in $\Theta(\sqrt{n})$
 \end{document}
