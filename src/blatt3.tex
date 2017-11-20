@@ -1,0 +1,94 @@
+\input{preamble}
+
+\DeclareMathOperator{\vc}{vc}
+
+\begin{document}
+
+\solution{3}{Marvin Mirtschin, Tobias Stengel und Sören Tietböhl}
+
+\exercise{Kreise der Länge 4}
+
+\exercise{Chordale Graphen}
+
+\subexercise
+\label{sec:sep-clique}
+
+Sei $G = (V,E)$ ein chordaler Graph sowie $a,b \in V$ zwei verschiedene, nicht-adjazente Knoten. Sei $S$ ein inklusionsmaximaler Separator, der $a$, und $b$ trennt, mit der Annahme dass dessen Knoten keine Clique bilden. D.h.
+$\exists s_1, s_2 \in S \colon \{s_1, s_2\} \notin E$.
+Wir nehmen im folgenden an, dass $S \neq \emptyset$, denn sonst gibt es nichts zu zeigen. Das bedeutet, dass $a$ und $b$ in derselben Zusammenhangskomponente liegen.
+
+Daraus folgt erstmal direkt, dass $$\forall s \in S \, \exists p = (s, \dots, b) \colon (s' \in S \wedge s' \in p \rightarrow s = s') \wedge a \notin p$$
+
+Es gibt also von jedem Knoten im Separator aus einen Weg zu $b$ der nicht über $a$ oder einen anderen Separatorknoten $s'$ führt.
+
+Ersteres bedeutet einfach nur dass der Weg ein Teilpfad von $a$ nach $b$ ist und der Separator tatsächlich ein Separator ist. Für den zweiten Teil schauen wir uns das Gegenteil an:
+Mal angenommen, es gibt keinen Pfad von $s$ aus, der nicht über einen anderen Knoten von $S$ führt. Dann ist $S$ nicht inklusionsmaximal, denn wir könnten $S \setminus \{s\}$ bilden und hätten einen gültigen Separator.
+
+Betrachten wir nun mal die konstruierte Situation als Graph.
+
+\begin{center}
+    \vspace{1ex}
+    \includegraphics[page=1]{fig/03-2a-pfade}
+\end{center}
+
+Wir haben mind. zwei Knoten $s_1$ und $s_2$, die im Separator liegen und nicht-adjazent sind.
+
+Es führen Pfade von a zu beiden Knoten. Diese Pfade müssen nicht wie im Bild dargestellt knotendisjunkt sein, aber das erleichtert die Vorstellung.
+
+Von $s_1$ und $s_2$ gibt es die oben beschriebenen Pfade nach $b$, die keine anderen Knoten des Separators verwenden. Auch diese Pfade müssen nicht knotendisjunkt sein.
+
+Allerdings gibt es hiermit mindestens 4 Knoten, die einen Kreis der Länge mind. 4 induzieren. Im Beispielbild sind das $a, s_1, b, s_2$. Falls die Pfade nicht knotendisjunkt sind, wählen wir anstatt von $a$ und $b$ einfach die letzte Stelle, an der sich die entsprechenden Pfade einen Knoten teilen.
+
+Damit haben wir einen Widerspruch gefunden, denn nun kann der Graph nach Definition nicht mehr chordal sein.
+Demnach müssen die Knoten aus S also eine Clique bilden.
+
+\subexercise
+
+Gegeben sei ein chordaler Graph $C = (V,E)$.
+
+\emph{Fall 1}
+Alle Knoten aus $C$ bilden eine Clique. Es gibt nichts zu tun.
+
+\emph{Fall 2}
+Die Knoten aus $C$ bilden keine Clique. Daraus folgt, dass es zwei verschiedene, nicht adjazente Knoten $v_1, v_2$ gibt.
+Es bleibt zu zeigen, dass beide Knoten simplizial sind.
+
+\emph{Fall 2.1}
+$N(v_i)$ für $i \in \{1,2\}$ ist ein inklusionsmaximaler Separator, der der $v_1$ von $v_2$ trennt.
+Mit Aufgabenteil~\ref{sec:sep-clique} wissen wir, dass $N(v_i)$ jeweils eine Clique sein muss. Damit sind die Knoten simplizial.
+
+\emph{Fall 2.2}
+$N(v_i)$ für $i \in \{1,2\}$ ist eine Clique. Damit sind beide Knoten simplizial.
+
+\emph{Fall 2.3}
+$N(v_i)$ für $i \in \{1,2\}$ ist ein kein inklusionsmaximaler Separator und bildet keine Clique. Wähle o.B.d.A $i = 1$.
+Dann gibt es $S = N(v_i) \setminus M$ mit $S \neq \emptyset$ und $M \neq \emptyset$. S ist nun inklusionsmaximaler Separator.
+$v_1$ kann also kein simplizialer Knoten sein. Wir müssen einen neuen Kandidaten finden.
+
+Dazu betracten wir nun einen Knoten $x \in M$, der nicht mit allen Knoten aus $S$ verbunden ist. Solch ein Knoten muss existieren, da $S$ eine Clique ist, aber $N(v_1)$ nicht.
+
+\emph{Fall 2.3.1}
+$\exists s' \in S \colon \{x,s'\} \in E$. $x$ hat mind. eine Verbindung zum Seperator $S$.
+Wir wählen nun $x$ als neues $v_1$ und wiederholen die Fallunterscheidung ab Fall 2 mit dem alten $v_2$ und $x$ als neues $v_1$.
+
+\begin{center}
+    \vspace{1ex}
+    \includegraphics[page=1]{fig/03-2b-xtos}
+\end{center}
+
+Damit wird $N(x) \cap (S \cup \{v_1\})$ zu einem inklusionsmaximalen Seperator für $x$ und $v_2$.
+Selbst wenn $x$ noch andere Verbindungen hat, können diese keine Pfade zu $v_2$ beinhalten, da $x$ sonst Teil von $S$ sein müsste.
+Dadurch ändert sich die Nachbarschaft die wir betrachten. In dem Teilgraph in dem sich $v_1$ befindet, wenn man die Knoten aus $S$ aus $V$ entfernt, befinden sich nur endlich viele Knoten.
+Da $x$ nicht mit allen Knoten aus $S$ verbunden ist, reduziert sich die Anzahl der relevanten Knoten in diesem Teilgraphen um mind. 1.
+
+\emph{Fall 2.3.2}
+$\nexists s' \in S \colon \{x,s'\} \in E$. $x$ hat keine Verbindung zum Seperator $S$.
+Dann gehen wir analog vor und wählen $x$ als neues $v_1$.
+
+Da $x$ nicht mit $S$ verbunden ist, reduziert sich also die Anzahl der Knoten im betrachteten Teilgraphen um mind. 1.
+
+Schließlich müssen wir auf einen Knoten treffen, der in Fall 2.1 oder Fall 2.2 fällt, da sich in Fall 2.3 die Anzahl der betrachteten Knoten stets verringert.
+
+Auf diese Weise finden wir immer zwei simpliziale Knoten.
+
+\end{document}
