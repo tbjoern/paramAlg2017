@@ -50,7 +50,7 @@ Da die Baumweite $k$ gegeben war, schien es eine gute Idee zu sein, eine Baumzer
 \subexercise
 \label{sec:sep-clique}
 
-Sei $G = (V,E)$ ein chordaler Graph sowie $a,b \in V$ zwei verschiedene, nicht-adjazente Knoten. Sei $S$ ein inklusionsmaximaler Separator, der $a$, und $b$ trennt, mit der Annahme dass dessen Knoten keine Clique bilden. D.h.
+Sei $G = (V,E)$ ein chordaler Graph sowie $a,b \in V$ zwei verschiedene, nicht-adjazente Knoten. Sei $S$ ein inklusionsminimaler Separator, der $a$, und $b$ trennt, mit der Annahme dass dessen Knoten keine Clique bilden. D.h.
 $\exists s_1, s_2 \in S \colon \{s_1, s_2\} \notin E$.
 Wir nehmen im folgenden an, dass $S \neq \emptyset$, denn sonst gibt es nichts zu zeigen. Das bedeutet, dass $a$ und $b$ in derselben Zusammenhangskomponente liegen.
 
@@ -59,7 +59,7 @@ Daraus folgt erstmal direkt, dass $$\forall s \in S \, \exists p = (s, \dots, b)
 Es gibt also von jedem Knoten im Separator aus einen Weg zu $b$ der nicht über $a$ oder einen anderen Separatorknoten $s'$ führt.
 
 Ersteres bedeutet einfach nur dass der Weg ein Teilpfad von $a$ nach $b$ ist und der Separator tatsächlich ein Separator ist. Für den zweiten Teil schauen wir uns das Gegenteil an:
-Mal angenommen, es gibt keinen Pfad von $s$ aus, der nicht über einen anderen Knoten von $S$ führt. Dann ist $S$ nicht inklusionsmaximal, denn wir könnten $S \setminus \{s\}$ bilden und hätten einen gültigen Separator.
+Mal angenommen, es gibt keinen Pfad von $s$ aus, der nicht über einen anderen Knoten von $S$ führt. Dann ist $S$ nicht inklusionsminimal, denn wir könnten $S \setminus \{s\}$ bilden und hätten einen gültigen Separator.
 
 Betrachten wir nun mal die konstruierte Situation als Graph.
 
@@ -81,51 +81,37 @@ Demnach müssen die Knoten aus S also eine Clique bilden.
 
 \subexercise
 
-Gegeben sei ein chordaler Graph $C = (V,E)$.
+Wir führen den Beweis per Induktion über die Anzahl der Knoten im Graphen.
 
-\emph{Fall 1}
-Alle Knoten aus $C$ bilden eine Clique. Es gibt nichts zu tun.
+\textbf{$i = 1$:}
+Der Graph mit einem Knoten ist trivialerweise eine Clique.
 
-\emph{Fall 2}
-Die Knoten aus $C$ bilden keine Clique. Daraus folgt, dass es zwei verschiedene, nicht adjazente Knoten $v_1, v_2$ gibt.
-Es bleibt zu zeigen, dass beide Knoten simplizial sind.
+\textbf{Induktionsvorraussetzung:}
+Die Aussage des Satzes gilt für alle $k = (0, \dots, i)$
 
-\emph{Fall 2.1}
-$N(v_i)$ für $i \in \{1,2\}$ ist ein inklusionsmaximaler Separator, der der $v_1$ von $v_2$ trennt.
-Mit Aufgabenteil~\ref{sec:sep-clique} wissen wir, dass $N(v_i)$ jeweils eine Clique sein muss. Damit sind die Knoten simplizial.
+\textbf{$i \rightarrow i + 1$:}
 
-\emph{Fall 2.2}
-$N(v_i)$ für $i \in \{1,2\}$ ist eine Clique. Damit sind beide Knoten simplizial.
+Sei $C = (V,E)$ mit $|V| = i + 1$ ein chordaler Graph.
+Entweder $C$ ist eine Clique, oder es gibt Knoten $v_1, v_2$ die nicht adjazent sind.
 
-\emph{Fall 2.3}
-$N(v_i)$ für $i \in \{1,2\}$ ist ein kein inklusionsmaximaler Separator und bildet keine Clique. Wähle o.B.d.A $i = 1$.
-Dann gibt es $S = N(v_i) \setminus M$ mit $S \neq \emptyset$ und $M \neq \emptyset$. S ist nun inklusionsmaximaler Separator.
-$v_1$ kann also kein simplizialer Knoten sein. Wir müssen einen neuen Kandidaten finden.
-
-Dazu betracten wir nun einen Knoten $x \in M$, der nicht mit allen Knoten aus $S$ verbunden ist. Solch ein Knoten muss existieren, da $S$ eine Clique ist, aber $N(v_1)$ nicht.
-
-\emph{Fall 2.3.1}
-$\exists s' \in S \colon \{x,s'\} \in E$. $x$ hat mind. eine Verbindung zum Seperator $S$.
-Wir wählen nun $x$ als neues $v_1$ und wiederholen die Fallunterscheidung ab Fall 2 mit dem alten $v_2$ und $x$ als neues $v_1$.
+Im ersten Fall sind wir fertig, im zweiten Fall verfahren wir wie folgt:
+Sei $S$ ein inklusionsminimaler Seperator, der $v_1$ und $v_2$ trennt.
+$S$ teilt den Graphen in zwei Teile $A$ und $B$:
 
 \begin{center}
     \vspace{1ex}
-    \includegraphics[page=1]{fig/03-2b-xtos}
+    \includegraphics[page=1]{fig/03-2b-sep}
 \end{center}
 
-Damit wird $N(x) \cap (S \cup \{v_1\})$ zu einem inklusionsmaximalen Seperator für $x$ und $v_2$.
-Selbst wenn $x$ noch andere Verbindungen hat, können diese keine Pfade zu $v_2$ beinhalten, da $x$ sonst Teil von $S$ sein müsste.
-Dadurch ändert sich die Nachbarschaft die wir betrachten. In dem Teilgraph in dem sich $v_1$ befindet, wenn man die Knoten aus $S$ aus $V$ entfernt, befinden sich nur endlich viele Knoten.
-Da $x$ nicht mit allen Knoten aus $S$ verbunden ist, reduziert sich die Anzahl der relevanten Knoten in diesem Teilgraphen um mind. 1.
+Jetzt können wir die Induktionsvorraussetzung auf beide Teile $A \cup S$ und $B \cup S$ anwenden.
+Jetzt gibt es mehrere Möglichkeiten:
 
-\emph{Fall 2.3.2}
-$\nexists s' \in S \colon \{x,s'\} \in E$. $x$ hat keine Verbindung zum Seperator $S$.
-Dann gehen wir analog vor und wählen $x$ als neues $v_1$.
-
-Da $x$ nicht mit $S$ verbunden ist, reduziert sich also die Anzahl der Knoten im betrachteten Teilgraphen um mind. 1.
-
-Schließlich müssen wir auf einen Knoten treffen, der in Fall 2.1 oder Fall 2.2 fällt, da sich in Fall 2.3 die Anzahl der betrachteten Knoten stets verringert.
-
-Auf diese Weise finden wir immer zwei simpliziale Knoten.
+\begin{itemize}
+    \item [Fall 1:] $A$ und $B$ sind beides Cliquen. Dieser Fall kann nicht eintreten, da sonst $C$ auch eine Clique wäre.
+    \item [Fall 2:] $A$ ist eine Clique, $B$ ist keine (oder andersherum). Dann gibt es zwei simpliziale, nicht-adjazente Knoten in B. Davon kann maximal einer in $S$ liegen (da $S$ eine Clique ist, siehe Teilaufgabe \ref{sec:sep-clique})
+    Wenn wir nun noch einen Knoten aus $A$ wählen, haben wir also zwei nicht adjazente simpliziale Knoten gefunden.
+    \item [Fall 3:] Weder $A$ noch $B$ sind Cliquen. Dann gibt es also zwei Knotenpaare $a_1, a_2, b_1, b_2$ wobei die Knotenpaare jeweils nicht adjazent sind, sowie die Knoten simplizial. Desweiteren kann nur maximal ein Knoten eines Knotenpaars in $S$ liegen, da $S$ eine Clique ist.
+    Dementsprechend können wir also aus den vier Knoten zwei auswählen, die beide nicht in $S$ liegen. Somit haben wir zwei nicht adjazente simpliziale Knoten gefunden.
+\end{itemize}
 
 \end{document}
