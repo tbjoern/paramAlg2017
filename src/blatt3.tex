@@ -50,8 +50,7 @@ Da die Baumweite $k$ gegeben war, schien es eine gute Idee zu sein, eine Baumzer
 \subexercise
 \label{sec:sep-clique}
 
-Sei $G = (V,E)$ ein chordaler Graph sowie $a,b \in V$ zwei verschiedene, nicht-adjazente Knoten. Sei $S$ ein inklusionsminimaler Separator, der $a$, und $b$ trennt, mit der Annahme dass dessen Knoten keine Clique bilden. D.h.
-$\exists s_1, s_2 \in S \colon \{s_1, s_2\} \notin E$.
+Sei $G = (V,E)$ ein chordaler Graph sowie $a,b \in V$ zwei verschiedene, nicht-adjazente Knoten. Sei $S$ ein inklusionsminimaler Separator, der $a$, und $b$ trennt.
 Wir nehmen im folgenden an, dass $S \neq \emptyset$, denn sonst gibt es nichts zu zeigen. Das bedeutet, dass $a$ und $b$ in derselben Zusammenhangskomponente liegen.
 
 Daraus folgt erstmal direkt, dass $$\forall s \in S \, \exists p = (s, \dots, b) \colon (s' \in S \wedge s' \in p \rightarrow s = s') \wedge a \notin p$$
@@ -68,7 +67,7 @@ Betrachten wir nun mal die konstruierte Situation als Graph.
     \includegraphics[page=1]{fig/03-2a-pfade}
 \end{center}
 
-Wir haben mind. zwei Knoten $s_1$ und $s_2$, die im Separator liegen und nicht-adjazent sind.
+Wir haben mind. zwei Knoten $s_1$ und $s_2$, die im Separator liegen.
 
 Es führen Pfade von a zu beiden Knoten. Diese Pfade müssen nicht wie im Bild dargestellt knotendisjunkt sein, aber das erleichtert die Vorstellung.
 
@@ -76,8 +75,14 @@ Von $s_1$ und $s_2$ gibt es die oben beschriebenen Pfade nach $b$, die keine and
 
 Allerdings gibt es hiermit mindestens 4 Knoten, die einen Kreis der Länge mind. 4 induzieren. Im Beispielbild sind das $a, s_1, b, s_2$. Falls die Pfade nicht knotendisjunkt sind, wählen wir anstatt von $a$ und $b$ einfach die letzte Stelle, an der sich die entsprechenden Pfade einen Knoten teilen.
 
-Damit haben wir einen Widerspruch gefunden, denn nun kann der Graph nach Definition nicht mehr chordal sein.
+Der Graph kann also nur dann chordal sein, wenn es eine Kante zwischen $s_1$ und $s_2$ gibt. Da die Knoten beliebig aus $S$ gewählt sind, gilt dies für alle Knoten aus $S$.
+(Anmerkung: zwischen $a$ und $b$ kann es keine Kante geben, da $S$ ja der Separator ist)
 Demnach müssen die Knoten aus S also eine Clique bilden.
+
+\how
+
+Die Herleitung ist sehr direkt. Man konstruiert die Ausgangssituation, d.h. wählt sich zwei Knoten und den Seperator und überlegt dann, wie man hier einen Kreis mit Länge 4 konstruieren kann.
+Das geht nur, wenn zwei Knoten im Seperator nicht miteinander Verbunden sind. Demnach muss dieser also eine Clique bilden.
 
 \subexercise
 
@@ -113,5 +118,15 @@ Jetzt gibt es mehrere Möglichkeiten:
     \item [Fall 3:] Weder $A$ noch $B$ sind Cliquen. Dann gibt es also zwei Knotenpaare $a_1, a_2, b_1, b_2$ wobei die Knotenpaare jeweils nicht adjazent sind, sowie die Knoten simplizial. Desweiteren kann nur maximal ein Knoten eines Knotenpaars in $S$ liegen, da $S$ eine Clique ist.
     Dementsprechend können wir also aus den vier Knoten zwei auswählen, die beide nicht in $S$ liegen. Somit haben wir zwei nicht adjazente simpliziale Knoten gefunden.
 \end{itemize}
+
+\how
+
+Unsere erste Idee war es, erst einmal zwei nicht adjazente Knoten zu nehmen, und dann zu zeigen, dass entweder die gewählten Knoten simplizial sind, oder man sich an den Nachbarn entlanghangeln kann, bis man bei einem Knoten ankommt der simplizial ist.
+Das hat in einer sehr komplizierten Fallunterscheidung gemündet. Vor allem das induktive Argument des 'entlanghangelns' war schwierig zu beweisen.
+
+Induktion war aber schon ein Schritt in die richtige Richtung. Teilaufgabe \ref{sec:sep-clique} beschäftigt sich mit Seperatoren, und wenn wir uns an Aufgabe 3 von Blatt 2 erinnern, ist das Vorgehen ähnlich.
+
+Man teilt den Graphen mit einem Seperator und betrachtet dann die übriggebliebenen Teilgraphen vereinigt mit dem Seperator.
+Dann muss man nur noch die Rekursion anwenden.
 
 \end{document}
