@@ -10,7 +10,40 @@
 
 \subexercise
 
-$\varphi(X_1) = \forall e_1 = (v_1, v_2), e_2 = (v_3, v_4), e_3 = (v_5, v_6), e_4 = (v_7, v_8) \in E \colon \text{paarweiseVerschieden } \wedge (v_1 = v_8 \wedge v_2 = v_3 \wedge v_4 = v_5 \wedge v_6 = v_7) \wedge (v_1, v_4) \notin E \wedge (v_2, v_6) \notin E \rightarrow (v_1, \dots, v_8) \cap X \neq \emptyset$
+$\varphi(X) = \forall e_1 = (v_1, v_2), e_2 = (v_3, v_4), e_3 = (v_5, v_6), e_4 = (v_7, v_8) \in E \colon \text{paarweiseVerschieden } \wedge (v_1 = v_8 \wedge v_2 = v_3 \wedge v_4 = v_5 \wedge v_6 = v_7) \rightarrow (v_1, \dots, v_8) \cap X \neq \emptyset$
+
+\how
+
+Durch Courcelles Theorem wissen wir, dass es einen FPT-Algorithmus für das Problem gibt, wenn es sich in $MSO_2$ darstellen lässt. Unsere Formel schaut dabei zunächst, ob es vier Kanten gibt die einen Kreis bilden. Falls dies der Fall ist, muss mindestens einer der betroffenen Vertices in der monadischen Variablen $X$ liegen, die unsere zu minimierende Menge repräsentiert. 
+
+\subexercise
+
+Bei gegebener Baumweite $k$ lässt sich laut Theorem der Vorlesung (Foliensatz 5, Folie 14) eine Baumzerlegung der Weite $4k+4$ in $O(8^k*k^2*n^2)$ erstellen. Das liegt noch in der vorgegebenen Zeit von $O(2^{O(k^2)}*n^{O(1)})$. Diese Baumzerlegung kann nun verwendet werden, um ein dynamisches Programm zu beschreiben:
+
+Im weiteren betrachten wir $4k+4$ als neues $k$. Das können wir tun, weil das immer noch in $O(k)$ liegt. Zusätzlich zu den betrachteten Knoten eines Bags muss gespeichert werden, ob Paare von Knoten über einen vergessenen Knoten verbunden sind und somit noch einen Viererkreis bilden können.
+
+Beim \textit{introduce} eines Knoten $v$ wird entschieden, ob er in die Ergebnismenge $X$ aufgenommen wird oder nicht. Dazu wird zunächst geprüft, ob mit $v$ ein Kreis geschlossen wird, d.h. es wird geprüft, ob $v$ zu jedem Element eines als gefährlich markierten Paares eine Verbindung hat. Ist das der Fall, muss $v$ in $X$ aufgenommen werden. Dann wird keine neue Teillösung erstellt, bei der $v \notin X$, da diese Teillösung einen Kreis der Länge 4 enthält, ohne dass eine der vier Knoten in $X$ ist. Die Teillösung wäre somit invalide. 
+
+Ansonsten werden zwei Teillösungen erstellt. In einer ist $v\in X$, in der anderen nicht. Für die Teillösung, in der $v\in X$, ändert sich an den Markierungen nichts, da alle Kreise, die über $v$ geschlossen werden können durch $v\in X$ abgedeckt sind. In der anderen Teillösung ($v\notin X$) müssen neue Knotenpaare als gefährlich markiert werden. Zum einen müssen alle Knoten, die eine Verbindung zu $v$ haben paarweise untereinander markiert werden. Zum anderen müssen Paare ($v,u)$) markiert werden, falls $v$ über einen anderen Knoten $w$ mit $u$ verbunden ist. In beiden Teillösungen gilt, dass bisherige Markierungen unverändert bleiben, da andere Kreise über diese Paare gebildet werden könnten.
+
+Beim \textit{forget} eines Knoten $v$ müssen alle Markierungen gelöscht werden, in denen $v$ Teil des Paares ist. Grund dafür ist, dass wir auf einer Baumzerlegung arbeiten. Daher kann es keine Verbindungen von $v$ zu später eingeführten Knoten mehr geben.
+
+Beim \textit{join} von zwei Teilgraphen $G_1, G_2$ muss geprüft werden, ob es ein Knotenpaar $(u,v)$ gibt, dass in beiden Teilgraphen markiert ist. Ist das der Fall, haben wir eine invalide Teillösung, da ein Kreis der Länge 4 entstanden ist. Grund dafür ist, dass es in jedem der beiden Teilgraphen einen vergessenen Knoten $w_i$ gegeben haben muss, der $u$ und $v$ verbunden hat. Da wir uns in einer Baumzerlegung befinden, muss für $w_1\in G_1, w_2\in G_2$ gelten $w_1\neq w_2$. Die Teillösung muss also nicht weiter verfolgt werden. Gibt es kein Knotenpaar, das in beiden Teilgraphen markiert ist, müssen die Mengen der in den Teilgraphen markierten Knoten vereinigt werden. Die Teillösung wird danach weiterverfolgt.
+
+\textbf{Kostenanalyse: }
+\begin{itemize}
+\item[introduce:] Zu betrachten sind bis zu $k$ Knoten, welche bis zu $k^2$ Paare bilden können. Es müssen alle Knoten zu denen der eingefügte Knoten eine Verbindung hat paarweise markiert werden. Damit gibt es potentiell $k^2$ neue Markierungen. Außerdem könnte jeder der $k$ Knoten mit dem eingefügten Knoten ein neues markiertes Paar bilden. Die Kosten für \textit{indtroduce} liegen somit in $O(k^2)$.
+\item[forget:] Es werden alle Markierungen gelöscht, in welchen der vergessene Knoten enthalten ist. Es gibt potentiell $k^2$ markierte Paare, die überprüft werden müssen, ob sie den Knoten enthalten. Die Kosten für \textit{forget} liegen damit in $O(k^2)$
+\item[join:] Für jede der $k^2$ Markierungen im ersten Teilgraphen muss geprüft werden, ob es diese Markierung auch in der Menge der $k^2$ Markierungen im zweiten Teilgraphen gibt. Ein \textit{join} kostet also $O(k^4)$.
+
+%Todo: Anzahl an Teillösungen? --> Gesamtkosten?
+
+\how
+
+Da die Baumweite $k$ gegeben war, schien es eine gute Idee zu sein, eine Baumzerlegung zu erstellen, um anschließend ein dynamisches Programm zu erstellen. Dabei orientierten wir uns an der Idee zum Finden eines Hamiltonkreises (s. Foliensatz 3 Folie 11ff.). 
+
+\end{itemize}
+
 
 \exercise{Chordale Graphen}
 
