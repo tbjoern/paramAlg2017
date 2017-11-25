@@ -57,7 +57,7 @@ Daraus folgt erstmal direkt, dass $$\forall s \in S \, \exists p = (s, \dots, b)
 
 Es gibt also von jedem Knoten im Separator aus einen Weg zu $b$ der nicht über $a$ oder einen anderen Separatorknoten $s'$ führt.
 
-Ersteres bedeutet einfach nur dass der Weg ein Teilpfad von $a$ nach $b$ ist und der Separator tatsächlich ein Separator ist. Für den zweiten Teil schauen wir uns das Gegenteil an:
+Ersteres bedeutet einfach nur, dass der Weg ein Teilpfad von $a$ nach $b$ ist und der Separator tatsächlich ein Separator ist. Für den zweiten Teil schauen wir uns das Gegenteil an:
 Mal angenommen, es gibt keinen Pfad von $s$ aus, der nicht über einen anderen Knoten von $S$ führt. Dann ist $S$ nicht inklusionsminimal, denn wir könnten $S \setminus \{s\}$ bilden und hätten einen gültigen Separator.
 
 Betrachten wir nun mal die konstruierte Situation als Graph.
@@ -115,7 +115,7 @@ Jetzt gibt es mehrere Möglichkeiten:
     \item [Fall 1:] $A$ und $B$ sind beides Cliquen. Dieser Fall kann nicht eintreten, da sonst $C$ auch eine Clique wäre.
     \item [Fall 2:] $A$ ist eine Clique, $B$ ist keine (oder andersherum). Dann gibt es zwei simpliziale, nicht-adjazente Knoten in B. Davon kann maximal einer in $S$ liegen (da $S$ eine Clique ist, siehe Teilaufgabe \ref{sec:sep-clique})
     Wenn wir nun noch einen Knoten aus $A$ wählen, haben wir also zwei nicht adjazente simpliziale Knoten gefunden.
-    \item [Fall 3:] Weder $A$ noch $B$ sind Cliquen. Dann gibt es also zwei Knotenpaare $a_1, a_2, b_1, b_2$ wobei die Knotenpaare jeweils nicht adjazent sind, sowie die Knoten simplizial. Desweiteren kann nur maximal ein Knoten eines Knotenpaars in $S$ liegen, da $S$ eine Clique ist.
+    \item [Fall 3:] Weder $A$ noch $B$ sind Cliquen. Dann gibt es also zwei Knotenpaare $a_1, a_2$ und $b_1, b_2$ wobei die Knotenpaare jeweils nicht adjazent sind, sowie die Knoten simplizial. Desweiteren kann nur maximal ein Knoten eines Knotenpaars in $S$ liegen, da $S$ eine Clique ist.
     Dementsprechend können wir also aus den vier Knoten zwei auswählen, die beide nicht in $S$ liegen. Somit haben wir zwei nicht adjazente simpliziale Knoten gefunden.
 \end{itemize}
 
