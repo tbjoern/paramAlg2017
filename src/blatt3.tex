@@ -12,6 +12,7 @@
 
 $\varphi(X) = \forall e_1 = (v_1, v_2), e_2 = (v_3, v_4), e_3 = (v_5, v_6), e_4 = (v_7, v_8) \in E \colon \text{paarweiseVerschieden } \wedge (v_1 = v_8 \wedge v_2 = v_3 \wedge v_4 = v_5 \wedge v_6 = v_7) \rightarrow (v_1, \dots, v_8) \cap X \neq \emptyset$
 
+Mit dieser Formel gilt $|\varphi| = \text{const}$, und damit liefert Courcelles Theorem einen FPT-Algorithmus.
 \how
 
 Durch Courcelles Theorem wissen wir, dass es einen FPT-Algorithmus für das Problem gibt, wenn es sich in $MSO_2$ darstellen lässt.
@@ -20,7 +21,7 @@ Wir erstellen zunächst eine Formel, die prüft, ob ein Kreis der Länge 4 exist
 
 \subexercise
 
-Bei gegebener Baumweite $k$ lässt sich laut Theorem der Vorlesung (Foliensatz 5, Folie 14) eine Baumzerlegung der Weite $4k+4$ in $O(8^k*k^2*n^2)$ erstellen. Das liegt noch in der vorgegebenen Zeit von $O(2^{O(k^2)}*n^{O(1)})$. Erstellen wir aus dieser Baumzerlegung eine schöne Baumzerlegung, können wir diese nun verwendet werden, um ein dynamisches Programm zu beschreiben:
+Bei gegebener Baumweite $k$ lässt sich laut Theorem der Vorlesung (Foliensatz 5, Folie 14) eine Baumzerlegung der Weite $4k+4$ in $O(8^k*k^2*n^2)$ erstellen. Das liegt noch in der vorgegebenen Zeit von $O(2^{O(k^2)}*n^{O(1)})$. Erstellen wir aus dieser Baumzerlegung eine schöne Baumzerlegung, können wir diese nun verwenden, um ein dynamisches Programm zu beschreiben:
 
 Im weiteren betrachten wir $4k+4$ als neues $k$. Das können wir tun, weil das immer noch in $O(k)$ liegt. Zusätzlich zu den betrachteten Knoten eines Bags muss gespeichert werden, ob Paare von Knoten über einen vergessenen Knoten verbunden sind und somit noch einen Viererkreis bilden können.
 
@@ -35,7 +36,7 @@ Da Kreise eventuell über Knoten geschlossen werden, die nicht mehr im aktuellen
 \begin{itemize}
 \item[introduce: ]Beim Einfügen eines neuen Knotens $v$ wird entschieden, ob dieser in die Ergebnismenge $X$ aufgenommen wird oder nicht. Dazu wird zunächst geprüft, ob mit $v$ ein Kreis geschlossen wird, d.h. es wird geprüft, ob $v$ zu jedem Element eines markierten Knotenpaares eine Verbindung hat. Ist das der Fall, muss $v$ in $X$ aufgenommen werden. Es darf dann keine neue Teillösung erstellt werden, bei der $v\notin X$, da diese Teillösung einen Kreis der Länge 4 enthalten würde, ohne dass einer der vier Knoten in $X$ enthalten ist. Die Teillösung wäre damit invalide.
 
-Andernfalls werden zwei Teillösungen erstellt. In einer ist $v\in X$, in der anderen nicht. Für die Teillösung, in der $v\in X$, ändert sich and en Markierungen nichts, da alle Kreise, die über $v$ geschlossen werden können durch $v\in X$ abgedeckt sind. In der anderen Teillösung ($v\notin X$) müssen neue Knotenpaare markiert werden. Zum einen müssen alle Knoten $u_i$, die eine Verbindung zu $v$ haben paarweise miteinander markiert werden (s. \autoref{03-1b-markierung1}). Zum anderen müssen Paare ($v,u_i$) markiert werden, falls $v$ über einen anderen Knoten $w$ mit $u_i$ verbunden ist (s. \autoref{03-1b-markeirung2}). In beiden Teillösungen gilt, dass bisherige Markierungen unverändert bleiben, da eventuell andere Kreise über diese markierten Paare gebildet werden können.
+Andernfalls werden zwei Teillösungen erstellt. In einer ist $v\in X$, in der anderen nicht. Für die Teillösung, in der $v\in X$, ändert sich an den Markierungen nichts, da alle Kreise, die über $v$ geschlossen werden können durch $v\in X$ abgedeckt sind. In der anderen Teillösung ($v\notin X$) müssen neue Knotenpaare markiert werden. Zum einen müssen alle Knoten $u_i$, die eine Verbindung zu $v$ haben paarweise miteinander markiert werden (s. \autoref{03-1b-markierung1}). Zum anderen müssen Paare ($v,u_i$) markiert werden, falls $v$ über einen anderen Knoten $w$ mit $u_i$ verbunden ist (s. \autoref{03-1b-markeirung2}). In beiden Teillösungen gilt, dass bisherige Markierungen unverändert bleiben, da eventuell andere Kreise über diese markierten Paare gebildet werden können.
 
 \begin{figure}[h]
 	\center
