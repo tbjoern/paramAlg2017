@@ -10,9 +10,11 @@
 
 \subexercise
 
-$\varphi(X) = \forall e_1 = (v_1, v_2), e_2 = (v_3, v_4), e_3 = (v_5, v_6), e_4 = (v_7, v_8) \in E \colon \text{paarweiseVerschieden } \wedge (v_1 = v_8 \wedge v_2 = v_3 \wedge v_4 = v_5 \wedge v_6 = v_7) \rightarrow (v_1, \dots, v_8) \cap X \neq \emptyset$
+$\varphi(X) = \forall e_1 = (v_1, v_2), e_2 = (v_3, v_4), e_3 = (v_5, v_6), e_4 = (v_7, v_8) \in E \colon \text{paarweiseVerschieden } \wedge (v_1 = v_8 \wedge v_2 = v_3 \wedge v_4 = v_5 \wedge v_6 = v_7) \rightarrow \{v_1, \dots, v_8\} \cap X \neq \emptyset$
 
-Mit dieser Formel gilt $|\varphi| = \text{const}$, und damit liefert Courcelles Theorem einen FPT-Algorithmus.
+Mit dieser $MSO_2$-Formel ist sichergestellt, dass sich mindestens ein Knoten jedes Kreises der Länge 4 in $X$ befindet.
+
+Mit dieser Formel ist $|\varphi|$ konstant und damit liefert Courcelles Theorem einen FPT-Algorithmus in der Baumweite.
 \how
 
 Durch Courcelles Theorem wissen wir, dass es einen FPT-Algorithmus für das Problem gibt, wenn es sich in $MSO_2$ darstellen lässt.
@@ -21,11 +23,11 @@ Wir erstellen zunächst eine Formel, die prüft, ob ein Kreis der Länge 4 exist
 
 \subexercise
 
-Bei gegebener Baumweite $k$ lässt sich laut Theorem der Vorlesung (Foliensatz 5, Folie 14) eine Baumzerlegung der Weite $4k+4$ in $O(8^k*k^2*n^2)$ erstellen. Das liegt noch in der vorgegebenen Zeit von $O(2^{O(k^2)}*n^{O(1)})$. Erstellen wir aus dieser Baumzerlegung eine schöne Baumzerlegung, können wir diese nun verwenden, um ein dynamisches Programm zu beschreiben:
+Bei gegebener Baumweite $k$ lässt sich laut Theorem der Vorlesung (Foliensatz 5, Folie 14) eine Baumzerlegung der Weite $4k+4$ in $O(8^k\cdot k^2\cdot n^2)$ erstellen. Das liegt noch in der vorgegebenen Zeit von $O(2^{O(k^2)}\cdot n^{O(1)})$. Erstellen wir aus dieser Baumzerlegung eine schöne Baumzerlegung, können wir diese nun verwenden, um ein dynamisches Programm zu beschreiben:
 
 Im weiteren betrachten wir $4k+4$ als neues $k$. Das können wir tun, weil das immer noch in $O(k)$ liegt. Zusätzlich zu den betrachteten Knoten eines Bags muss gespeichert werden, ob Paare von Knoten über einen vergessenen Knoten verbunden sind und somit noch einen Viererkreis bilden können.
 
-Zunächst müssen alle Blätter der Baumzerlegung betrachtet werden. Es werden alle möglichen Kombination von in $X$ enthaltenen Elementen des Bags betrachtet. Wir wissen, dass es maximal $k+1$ Elemente im Bag geben kann, gibt es also $O(2^k)$ mögliche Kombinationen die Elemente aus dem Bag zu $X$ hinzuzufügen.
+Zunächst müssen alle Blätter der Baumzerlegung betrachtet werden. Es werden alle möglichen Kombination von in $X$ enthaltenen Elementen des Bags betrachtet. Wir wissen, dass es maximal $k+1$ Elemente im Bag geben kann, es gibt also $O(2^k)$ mögliche Kombinationen die Elemente aus dem Bag zu $X$ hinzuzufügen.
 
 Anschießend müssen alle Kombinationen validiert werden, d.h. es muss geprüft werden, ob mit den entfernten Elementen der Bag keine Kreise der Länge 4 enthält. Wird noch ein Kreis gefunden, ist die geprüfte Kombination ungültig und kann somit aus der Ergebnismenge gelöscht werden. Diese Überprüfung auf Kreisfreiheit kann zum Beispiel mit BFS durchgeführt werden. Man führt eine Suche von jedem Knoten des $v_i$ Bags durch und merkt sich zusätzlich die Pfade zu gefundenen Knoten. Nach zwei Schritten kann dann abgebrochen werden. Findet man nach genau zwei Schritten von $v_i$ aus mindestens zwei mal den gleichen Knoten $u$ über unterchiedliche Pfade, ist ein Kreis gefunden, die Lösung also nicht valide.
 
@@ -62,7 +64,9 @@ Zu betrachten sind beim \textit{introduce} bis zu $k+1$ Knoten, welche bis zu $(
 
 Es gibt potentiell $k^2$ markierte Paare, die überprüft werden müssen, ob sie den Knoten $v$ enthalten. Die Kosten für \textit{forget} liegen damit in $O(k^2)$
 
-\item[join: ]Beim joinen von zwei Teilgraphen $G_1, G_2$ muss geprüft werden, ob es ein Knotenpaar $(u,v)$ gibt, dass in bieden Teilgraphen markiert ist. Ist das der Fall, haben wir eine invalide Teillösung, da beim zusammenführen von $G_1$ und $G_2$ ein Kreis der Länge 4 entsteht. Grund daüfr ist, dass es in jedem der beiden Teilgraphen einen vergessenen Knoten $w_i$ gegeben haben muss, der $u$ und $v$ verbindet (s. \autoref{03-1b-join}). Da wir uns in einer Baumzerlegung befinden, muss für $w_1\in G_1, w_2\in G_2$ gelten, dass $w_1\neq w_2$. Die Teillösung muss also nicht weiter verfolgt werden. Gibt es kein Knotenpaar, das in beiden Teilgraphen markiert ist, müssen die Mengen der in den Teilgraphen markierten Knoten vereinigt werden. Die Teillösung wird danach weiterverfolgt.
+\item[join: ] Beim Joinen von zwei Teilgraphen $G_1, G_2$ wird zunächst geschaut, ob ihre bisherigen Lösungen kombinierbar sind, d.h. ob sie die selben Knoten für $X$ gewählt haben. Somit wird sichergestellt, dass nur Teilgraphen gejoint werden, die in $X$ übereinstimmen.
+
+Anschließend muss geprüft werden, ob es ein Knotenpaar $(u,v)$ gibt, dass in beiden Teilgraphen markiert ist. Ist das der Fall, haben wir eine invalide Teillösung, da beim Zusammenführen von $G_1$ und $G_2$ ein Kreis der Länge 4 entsteht. Grund dafür ist, dass es in jedem der beiden Teilgraphen einen vergessenen Knoten $w_i$ gegeben haben muss, der $u$ und $v$ verbindet (s. \autoref{03-1b-join}). Da wir uns in einer Baumzerlegung befinden, muss für $w_1\in G_1, w_2\in G_2$ gelten, dass $w_1\neq w_2$. Die Teillösung muss also nicht weiter verfolgt werden. Gibt es kein Knotenpaar, das in beiden Teilgraphen markiert ist, müssen die Mengen der in den Teilgraphen markierten Knoten vereinigt werden. Die Teillösung wird danach weiterverfolgt.
 
 \begin{figure}[h]
 	\center		
@@ -74,7 +78,7 @@ Es gibt potentiell $k^2$ markierte Paare, die überprüft werden müssen, ob sie
 Für jede der $k^2$ Markierungen im ersten Teilgraphen muss geprüft werden, ob es diese Markierung auch in der Menge der $k^2$ Markierungen im zweiten Teilgraphen gibt. Die Kosten für \textit{join} liegen damit in $O(k^4)$.
 \end{itemize}
 
-Es gibt $O(2^k)$ mögliche Teillösungen, die mithilfe von \textit{introduce}, \textit{forget} und \textit{join} aktualisiert werden müssen. Die teuerste Operation davon (\textit{join}) liegt in $O(k^4)$. Die Anzahl der Bags der Baumzerlegung liegt in $O(n)$. Damit ergeben sich Gesamtkosten von $O(2^k*k^4*n)$ für den Algorithmus.
+Es gibt $O(2^k)$ mögliche Teillösungen, die mithilfe von \textit{introduce}, \textit{forget} und \textit{join} aktualisiert werden müssen. Die teuerste Operation davon (\textit{join}) liegt in $O(k^4)$. Die Anzahl der Bags der Baumzerlegung liegt in $O(n)$. Damit ergeben sich Gesamtkosten von $O(2^k\cdot k^4\cdot n)$ für den Algorithmus.
 
 \how
 
