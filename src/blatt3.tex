@@ -99,6 +99,7 @@ Wir nehmen im folgenden an, dass $S \neq \emptyset$, denn sonst gibt es nichts z
 Daraus folgt erstmal direkt, dass $$\forall s \in S \, \exists p = (s, \dots, b) \colon (s' \in S \wedge s' \in p \rightarrow s = s') \wedge a \notin p$$
 
 Es gibt also von jedem Knoten im Separator aus einen Weg zu $b$ der nicht über $a$ oder einen anderen Separatorknoten $s'$ führt.
+Das gleiche gilt analog für vertauschtes a und b.
 
 Ersteres bedeutet einfach nur, dass der Weg ein Teilpfad von $a$ nach $b$ ist und der Separator tatsächlich ein Separator ist. Für den zweiten Teil schauen wir uns das Gegenteil an:
 Mal angenommen, es gibt keinen Pfad von $s$ aus, der nicht über einen anderen Knoten von $S$ führt. Dann ist $S$ nicht inklusionsminimal, denn wir könnten $S \setminus \{s\}$ bilden und hätten einen gültigen Separator.
@@ -124,8 +125,8 @@ Demnach müssen die Knoten aus S also eine Clique bilden.
 
 \how
 
-Die Herleitung ist sehr direkt. Man konstruiert die Ausgangssituation, d.h. wählt sich zwei Knoten und den Seperator und überlegt dann, wie man hier einen Kreis mit Länge 4 konstruieren kann.
-Das geht nur, wenn zwei Knoten im Seperator nicht miteinander Verbunden sind. Demnach muss dieser also eine Clique bilden.
+Die Herleitung ist sehr direkt. Man konstruiert die Ausgangssituation, d.h. wählt sich zwei Knoten und den Separator und überlegt dann, wie man hier einen Kreis mit Länge 4 konstruieren kann.
+Das geht nur, wenn zwei Knoten im Separator nicht miteinander Verbunden sind. Demnach muss dieser also eine Clique bilden.
 
 \subexercise
 
@@ -142,9 +143,9 @@ Die Aussage des Satzes gilt für alle $k = (0, \dots, i)$
 Sei $C = (V,E)$ mit $|V| = i + 1$ ein chordaler Graph.
 Entweder $C$ ist eine Clique, oder es gibt Knoten $v_1, v_2$ die nicht adjazent sind.
 
-Im ersten Fall sind wir fertig, im zweiten Fall verfahren wir wie folgt:
-Sei $S$ ein inklusionsminimaler Seperator, der $v_1$ und $v_2$ trennt.
-$S$ teilt den Graphen in zwei Teile $A$ und $B$:
+Im ersten Fall sind wir fertig, denn es gibt in einer Clique auch keine zwei nicht-adjazenten Knoten. Im zweiten Fall verfahren wir wie folgt:
+Sei $S$ ein inklusionsminimaler Separator, der $v_1$ und $v_2$ trennt.
+$S$ teilt den Graphen in zwei Teile $A$ und $B$, wobei $S$ nach Teilaufgabe \ref{sec:sep-clique} eine Clique bildet:
 
 \begin{center}
     \vspace{1ex}
@@ -152,24 +153,23 @@ $S$ teilt den Graphen in zwei Teile $A$ und $B$:
 \end{center}
 
 Jetzt können wir die Induktionsvorraussetzung auf beide Teile $A \cup S$ und $B \cup S$ anwenden.
-Jetzt gibt es mehrere Möglichkeiten:
+Es gibt zwei Möglichkeiten:
 
 \begin{itemize}
-    \item [Fall 1:] $A$ und $B$ sind beides Cliquen. Dieser Fall kann nicht eintreten, da sonst $C$ auch eine Clique wäre.
-    \item [Fall 2:] $A$ ist eine Clique, $B$ ist keine (oder andersherum). Dann gibt es zwei simpliziale, nicht-adjazente Knoten in B. Davon kann maximal einer in $S$ liegen (da $S$ eine Clique ist, siehe Teilaufgabe \ref{sec:sep-clique})
-    Wenn wir nun noch einen Knoten aus $A$ wählen, haben wir also zwei nicht adjazente simpliziale Knoten gefunden.
-    \item [Fall 3:] Weder $A$ noch $B$ sind Cliquen. Dann gibt es also zwei Knotenpaare $a_1, a_2$ und $b_1, b_2$ wobei die Knotenpaare jeweils nicht adjazent sind, sowie die Knoten simplizial. Desweiteren kann nur maximal ein Knoten eines Knotenpaars in $S$ liegen, da $S$ eine Clique ist.
-    Dementsprechend können wir also aus den vier Knoten zwei auswählen, die beide nicht in $S$ liegen. Somit haben wir zwei nicht adjazente simpliziale Knoten gefunden.
+	\item [Fall 1:] $A \cup S$ ist eine Clique. Dann wählen wir einen beliebigen Knoten aus A.
+	\item [Fall 2:] Es gibt zwei nicht-adjazente simpliziale Knoten in $A \cup S$. Da $S$eine Clique ist, können nicht beide Knoten in $S$ liegen. Wir wählen den Knoten der in $A$ liegt.
 \end{itemize}
+
+Dasselbe machen wir analog für $B \cup S$ und haben somit zwei nicht adjazente simpliziale Knoten in $C$ gefunden.
 
 \how
 
 Unsere erste Idee war es, erst einmal zwei nicht adjazente Knoten zu nehmen, und dann zu zeigen, dass entweder die gewählten Knoten simplizial sind, oder man sich an den Nachbarn entlanghangeln kann, bis man bei einem Knoten ankommt der simplizial ist.
 Das hat in einer sehr komplizierten Fallunterscheidung gemündet. Vor allem das induktive Argument des 'entlanghangelns' war schwierig zu beweisen.
 
-Induktion war aber schon ein Schritt in die richtige Richtung. Teilaufgabe \ref{sec:sep-clique} beschäftigt sich mit Seperatoren, und wenn wir uns an Aufgabe 3 von Blatt 2 erinnern, ist das Vorgehen ähnlich.
+Induktion war aber schon ein Schritt in die richtige Richtung. Teilaufgabe \ref{sec:sep-clique} beschäftigt sich mit Separatoren, und wenn wir uns an Aufgabe 3 von Blatt 2 erinnern, ist das Vorgehen ähnlich.
 
-Man teilt den Graphen mit einem Seperator und betrachtet dann die übriggebliebenen Teilgraphen vereinigt mit dem Seperator.
-Dann muss man nur noch die Rekursion anwenden.
+Man teilt den Graphen mit einem Separator und betrachtet dann die übriggebliebenen Teilgraphen vereinigt mit dem Separator.
+Dann muss man nur noch die Induktion anwenden.
 
 \end{document}
