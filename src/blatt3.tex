@@ -29,7 +29,7 @@ Im weiteren betrachten wir $4k+4$ als neues $k$. Das können wir tun, weil das i
 
 Zunächst müssen alle Blätter der Baumzerlegung betrachtet werden. Es werden alle möglichen Kombination von in $X$ enthaltenen Elementen des Bags betrachtet. Wir wissen, dass es maximal $k+1$ Elemente im Bag geben kann, es gibt also $O(2^k)$ mögliche Kombinationen die Elemente aus dem Bag zu $X$ hinzuzufügen.
 
-Anschießend müssen alle Kombinationen validiert werden, d.h. es muss geprüft werden, ob mit den entfernten Elementen der Bag keine Kreise der Länge 4 enthält. Wird noch ein Kreis gefunden, ist die geprüfte Kombination ungültig und kann somit aus der Ergebnismenge gelöscht werden. Diese Überprüfung auf Kreisfreiheit kann zum Beispiel mit BFS durchgeführt werden. Man führt eine Suche von jedem Knoten des $v_i$ Bags durch und merkt sich zusätzlich die Pfade zu gefundenen Knoten. Nach zwei Schritten kann dann abgebrochen werden. Findet man nach genau zwei Schritten von $v_i$ aus mindestens zwei mal den gleichen Knoten $u$ über unterchiedliche Pfade, ist ein Kreis gefunden, die Lösung also nicht valide.
+Anschließend müssen alle Kombinationen validiert werden, d.h. es muss geprüft werden, ob mit den entfernten Elementen der Bag keine Kreise der Länge 4 enthält. Wird noch ein Kreis gefunden, ist die geprüfte Kombination ungültig und kann somit aus der Ergebnismenge gelöscht werden. Diese Überprüfung auf Kreisfreiheit kann zum Beispiel mit BFS durchgeführt werden. Man führt eine Suche von jedem Knoten des $v_i$ Bags durch und merkt sich zusätzlich die Pfade zu gefundenen Knoten. Nach zwei Schritten kann dann abgebrochen werden. Findet man nach genau zwei Schritten von $v_i$ aus mindestens zwei mal den gleichen Knoten $u$ über unterchiedliche Pfade, ist ein Kreis gefunden, die Lösung also nicht valide.
 
 Gehen wir nun von den Blättern der schönen Baumzerlegung zu den anderen Bags, muss die Menge der validen Kombinationen aktualisiert werden. Dafür gibt es Regeln für \textit{introduce-}, \textit{forget-} und \textit{join-}Knoten. 
 
@@ -38,7 +38,7 @@ Da Kreise eventuell über Knoten geschlossen werden, die nicht mehr im aktuellen
 \begin{itemize}
 \item[introduce: ]Beim Einfügen eines neuen Knotens $v$ wird entschieden, ob dieser in die Ergebnismenge $X$ aufgenommen wird oder nicht. Dazu wird zunächst geprüft, ob mit $v$ ein Kreis geschlossen wird, d.h. es wird geprüft, ob $v$ zu jedem Element eines markierten Knotenpaares eine Verbindung hat. Ist das der Fall, muss $v$ in $X$ aufgenommen werden. Es darf dann keine neue Teillösung erstellt werden, bei der $v\notin X$, da diese Teillösung einen Kreis der Länge 4 enthalten würde, ohne dass einer der vier Knoten in $X$ enthalten ist. Die Teillösung wäre damit invalide.
 
-Andernfalls werden zwei Teillösungen erstellt. In einer ist $v\in X$, in der anderen nicht. Für die Teillösung, in der $v\in X$, ändert sich an den Markierungen nichts, da alle Kreise, die über $v$ geschlossen werden können durch $v\in X$ abgedeckt sind. In der anderen Teillösung ($v\notin X$) müssen neue Knotenpaare markiert werden. Zum einen müssen alle Knoten $u_i$, die eine Verbindung zu $v$ haben paarweise miteinander markiert werden (s. \autoref{03-1b-markierung1}). Zum anderen müssen Paare ($v,u_i$) markiert werden, falls $v$ über einen anderen Knoten $w$ mit $u_i$ verbunden ist (s. \autoref{03-1b-markeirung2}). In beiden Teillösungen gilt, dass bisherige Markierungen unverändert bleiben, da eventuell andere Kreise über diese markierten Paare gebildet werden können.
+Andernfalls werden zwei Teillösungen erstellt. In einer ist $v\in X$, in der anderen nicht. Für die Teillösung, in der $v\in X$, ändert sich an den Markierungen nichts, da alle Kreise, die über $v$ geschlossen werden können durch $v\in X$ abgedeckt sind. In der anderen Teillösung ($v\notin X$) müssen neue Knotenpaare markiert werden. Zum einen müssen alle Knoten $u_i$, die eine Verbindung zu $v$ haben, paarweise miteinander markiert werden (s. \autoref{03-1b-markierung1}). Zum anderen müssen Paare ($v,u_i$) markiert werden, falls $v$ über einen anderen Knoten $w$ mit $u_i$ verbunden ist (s. \autoref{03-1b-markeirung2}). In beiden Teillösungen gilt, dass bisherige Markierungen unverändert bleiben, da eventuell andere Kreise über diese markierten Paare gebildet werden können.
 
 \begin{figure}[h]
 	\center
@@ -58,7 +58,7 @@ Andernfalls werden zwei Teillösungen erstellt. In einer ist $v\in X$, in der an
 	\end{minipage}	    
 \end{figure}
 
-Zu betrachten sind beim \textit{introduce} bis zu $k+1$ Knoten, welche bis zu $(k+1)^2$ Paare bilden können. Es müssen alle Knoten zu denen der eingefügt Knoten eine Verbindung hat paarweise markiert werden. Damit gibt es $O(k^2)$ neue Markierungen. Außerdem könnte jeder der $k$ Knoten mit dem eingefügten Knoten ein neues markiertes Paar bilden. Die Kosten für \textit{introduce} liegen somit in $O(k^2)$.
+Zu betrachten sind beim \textit{introduce} bis zu $k+1$ Knoten, welche bis zu $(k+1)^2$ Paare bilden können. Es müssen alle Knoten, zu denen der eingefügte Knoten eine Verbindung hat, paarweise markiert werden. Damit gibt es $O(k^2)$ neue Markierungen. Außerdem könnte jeder der $k$ Knoten mit dem eingefügten Knoten ein neues markiertes Paar bilden. Die Kosten für \textit{introduce} liegen somit in $O(k^2)$.
 
 \item[forget: ]Beim vergessen eines Knoten $v$ müssen alle Markeirungen gelöscht werden, in denen $v$ Teil des Paares ist. Grund dafür ist, dass wir auf einer Baumzerlegung arbeiten und es daher keine Verbindungen von $v$ zu später eingeführten Knoten mehr geben kann.
 
@@ -66,7 +66,7 @@ Es gibt potentiell $k^2$ markierte Paare, die überprüft werden müssen, ob sie
 
 \item[join: ] Beim Joinen von zwei Teilgraphen $G_1, G_2$ wird zunächst geschaut, ob ihre bisherigen Lösungen kombinierbar sind, d.h. ob sie die selben Knoten für $X$ gewählt haben. Somit wird sichergestellt, dass nur Teilgraphen gejoint werden, die in $X$ übereinstimmen.
 
-Anschließend muss geprüft werden, ob es ein Knotenpaar $(u,v)$ gibt, dass in beiden Teilgraphen markiert ist. Ist das der Fall, haben wir eine invalide Teillösung, da beim Zusammenführen von $G_1$ und $G_2$ ein Kreis der Länge 4 entsteht. Grund dafür ist, dass es in jedem der beiden Teilgraphen einen vergessenen Knoten $w_i$ gegeben haben muss, der $u$ und $v$ verbindet (s. \autoref{03-1b-join}). Da wir uns in einer Baumzerlegung befinden, muss für $w_1\in G_1, w_2\in G_2$ gelten, dass $w_1\neq w_2$. Die Teillösung muss also nicht weiter verfolgt werden. Gibt es kein Knotenpaar, das in beiden Teilgraphen markiert ist, müssen die Mengen der in den Teilgraphen markierten Knoten vereinigt werden. Die Teillösung wird danach weiterverfolgt.
+Anschließend muss geprüft werden, ob es ein Knotenpaar $(u,v)$ gibt, das in beiden Teilgraphen markiert ist. Ist das der Fall, haben wir eine invalide Teillösung, da beim Zusammenführen von $G_1$ und $G_2$ ein Kreis der Länge 4 entsteht. Grund dafür ist, dass es in jedem der beiden Teilgraphen einen vergessenen Knoten $w_i$ gegeben haben muss, der $u$ und $v$ verbindet (s. \autoref{03-1b-join}). Da wir uns in einer Baumzerlegung befinden, muss für $w_1\in G_1, w_2\in G_2$ gelten, dass $w_1\neq w_2$. Die Teillösung muss also nicht weiter verfolgt werden. Gibt es kein Knotenpaar, das in beiden Teilgraphen markiert ist, müssen die Mengen der in den Teilgraphen markierten Knoten vereinigt werden. Die Teillösung wird danach weiterverfolgt.
 
 \begin{figure}[h]
 	\center		
@@ -156,8 +156,8 @@ Jetzt können wir die Induktionsvorraussetzung auf beide Teile $A \cup S$ und $B
 Es gibt zwei Möglichkeiten:
 
 \begin{itemize}
-	\item [Fall 1:] $A \cup S$ ist eine Clique. Dann wählen wir einen beliebigen Knoten aus A.
-	\item [Fall 2:] Es gibt zwei nicht-adjazente simpliziale Knoten in $A \cup S$. Da $S$eine Clique ist, können nicht beide Knoten in $S$ liegen. Wir wählen den Knoten der in $A$ liegt.
+	\item [Fall 1:] $A \cup S$ ist eine Clique. Dann wählen wir einen beliebigen Knoten aus $A$.
+	\item [Fall 2:] Es gibt zwei nicht-adjazente simpliziale Knoten in $A \cup S$. Da $S$ eine Clique ist, können nicht beide Knoten in $S$ liegen. Wir wählen den Knoten, der in $A$ liegt.
 \end{itemize}
 
 Dasselbe machen wir analog für $B \cup S$ und haben somit zwei nicht adjazente simpliziale Knoten in $C$ gefunden.
