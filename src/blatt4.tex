@@ -1,0 +1,100 @@
+\input{preamble}
+
+\DeclareMathOperator{\vc}{vc}
+
+\begin{document}
+
+\solution{4}{Marvin Mirtschin, Tobias Stengel und Sören Tietböhl}
+
+\exercise{Vertex Cover in bipartiten Graphen}
+
+\subexercise
+\label{sec:vc-bp}
+
+Der Ansatz ist zu zeigen, dass die Matrix der LP-Relaxierung des ILPs total unimodular ist.
+Dazu benutzen wir diesen Satz aus der Vorlesung:
+
+\begin{center}
+	\textbf{Satz:} Eine Matrix $A \in \mathbb{Z}^{m \times n}$ is total unimodular, wenn jede quadratische Submatrix Determinante -1, 0 oder 1 hat.
+\end{center}
+
+Wenn wir uns die Matrix des LPs angucken, dann fällt auf, dass jede Zeile max. 2 Einsen hat, und sonst Nullen. Das kommt daher, dass eine Zeile entweder $0 \leq x_i \leq 1$ oder
+$x_i + x_j \leq 1$ darstellt.
+
+Wenn wir nun eine beliebige quadratische Submatrix betrachten, gibt es verschiedene Fälle:
+
+\begin{itemize}
+	\item[Fall 1:] Zwei Zeilen/Spalten sind identisch oder eine Zeile/Spalte ist komplett mit Nullen gefüllt. Dann ist die Teilmatrix nicht invertierbar und die Determinante 0.
+	\item[Fall 2:] Eine Zeile/Spalte hat genau eine 1. Dann können wir nach dieser Zeile/Spalte einwickeln und das Problem auf eine kleinere Matrix zurückführen. (Bei einer 1x1 Matrix ist die Determinante dann 1)
+	\item[Fall 3:] Jede Zeile hat genau zwei Einsen und jede Spalte hat mehr als eine Eins. Zunächst bemerken wir, dass wenn wir alle Spalten aufaddieren, wir eine Spalte mit nur 2en bekommen. 
+	
+	Jetzt machen wir uns die Bipartitheit des Graphen zunutze: Ein Knoten des Graphen gehört entweder zur Menge $A$ oder zur Menge $B$, wobei alle Kanten Endpunkte in beiden Mengen haben. Das bedeutet für die Matrix, dass wenn wir alle Spalten von Knoten aus $A$ aufaddieren, wir eine Spalte mit 1 in jeder Zelle bekommen. Dasselbe gilt analog für die Spalten von Knoten aus $B$.
+
+	Das gilt deshalb, weil jede Zeile eine Kante darstellt, und ebend jewils einen Endpunkt in jeder der Mengen hat.
+
+	Das liefert uns jetzt einen Weg mit dem wir eine der Spalten auf 0 bringen können.
+	Wir wählen also eine beliebige Spalte. Sei o.B.d.A. diese Spalte von einem Knoten aus $A$ (sonst benennen wir um). Dann addieren wir alle anderen Spalten von Knoten aus $A$ dazu und ziehen alle Spalten von Knoten aus $B$ ab. Mit obiger Festellung wissen wir dass diese Zeile nun nur Nullen enthält. Damit ist sie linear abhängig und die Determinante ist 0.
+\end{itemize}
+
+Damit haben wir alle Möglichkeiten abgedeckt und gezeigt dass jede quadratische Teilmatrix Determinante 0 oder 1 hat. Also ist die Matrix des LP total unimodular und somit hat die LP-Relaxierung des ILPs zu Vertex Cover eine ganzzahlige Lösung.
+
+\subexercise
+
+Wenn wir den Dualitätssatz auf das Problem aus Teilaufgabe \ref{sec:vc-bp} anwenden bekommen wir das duale Problem. Schauen wir uns doch einmal diesen Prozess an.
+Hier das primale Problem Vertex Cover:
+
+minimiere: $\begin{pmatrix} 1 & 1 & 1 & 1 \end{pmatrix} \begin{pmatrix} a_1 \\ a_2 \\ b_1 \\ b_2 \end{pmatrix}$
+
+mit $
+\begin{pmatrix}
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0 \\
+0 & 0 & -1 & 0 \\
+0 & 0 & 0 & -1 \\
+1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 1 \\
+0 & 1 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix} a_1 \\ a_2 \\ b_1 \\ b_2 \end{pmatrix}
+\geq
+\begin{pmatrix}
+-1 \\
+-1 \\
+-1 \\
+-1 \\
+1 \\
+1 \\
+1 \\
+1 \\
+\end{pmatrix}
+	$
+
+Hier dazu das duale Problem:
+
+maximiere $\begin{pmatrix} -1& - 1& - 1& - 1& 1 & 1 & 1 & 1 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \\ x_6 \\ x_7 \\ x_8 \end{pmatrix}$
+
+mit 
+$
+\begin{pmatrix}
+-1& 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+0 &-1 & 0 & 0 & 0 & 0 & 1 & 1 \\
+0 & 0 &-1 & 0 & 1 & 0 & 1 & 0 \\
+0 & 0 & 0 &-1 & 0 & 1 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \\ x_6 \\ x_7 \\ x_8 \end{pmatrix}
+	\leq
+\begin{pmatrix} 1 \\ 1 \\ 1 \\ 1 \end{pmatrix}$
+
+Dabei ist eine versteckte Nebenbedingung beider Darstellungen, dass alle Variablen $\geq 0$ sein müssen.
+
+Der Algorithmus wird also versuchen $x_1 \dots x_4$ möglichst auf 0 zu lassen und den anderen $x_i$ einen hohen Wert zuzuweisen. Da jedes $x$ einer Zeile der ursprünglichen Matrix entspricht, bedeutet eine 1, dass die entsprechende Kante ausgewählt wird.
+
+Die Matrix der Nebenbedingungen im dualen Programm stellt sicher, dass jeder Knoten (jede Zeile) nur an max einer Kante (Spalte) beteiligt ist.
+
+Wir können direkt sehen, dass Werte über 1 für die $x_i$ zwar möglich sind, allerdings ist es nicht sinnvoll eines der $x_i$ höher als 1 zu setzen, da im Falle von $x_5 \dots x_8$ mit einem der $x_1 \dots x_4$ ein Gegengewicht gesetzt werden muss. In der Summe verändert sich der Maximierungsterm nicht.
+
+Insgesamt versucht das duale Problem möglichst viele Kanten auszuwählen, unter der Bedingung dass jeder Knoten nur an max einer Kante beteiligt ist. Das ist genau das Problem des maximalen Matchings in einem Graphen.
+
+Aus Teilaufgabe \ref{sec:vc-bp} wissen wir, dass das primale ILP Lösbar ist, wenn der Graph bipartit ist. Die Dualität der Probleme liefert uns, dass eine minimale Lösung für Vertex Cover auch eine maximale Lösung für das Matching Problem ist.
+\end{document}
