@@ -97,4 +97,23 @@ Wir können direkt sehen, dass Werte über 1 für die $x_i$ zwar möglich sind, 
 Insgesamt versucht das duale Problem möglichst viele Kanten auszuwählen, unter der Bedingung dass jeder Knoten nur an max einer Kante beteiligt ist. Das ist genau das Problem des maximalen Matchings in einem Graphen.
 
 Aus Teilaufgabe \ref{sec:vc-bp} wissen wir, dass das primale ILP Lösbar ist, wenn der Graph bipartit ist. Die Dualität der Probleme liefert uns, dass eine minimale Lösung für Vertex Cover auch eine maximale Lösung für das Matching Problem ist.
+
+\exercise{Edge Clique Cover}
+
+Die einzige Reduktionsregel die wir benötigen, ist eine welche echte Zwillinge entfernt.
+
+Gegeben zwei Knoten $u, v$ die echte Zwillinge sind. Wir machen folgende Beobachtung: Wenn $M$ eine Clique ist mit $u \in M$ dann ist $M \cup \{v\}$ auch eine Clique. Das folgt direkt aus $N(u) \cup \{u\} = N(v) \cup \{v\}$.
+
+Damit haben wir auch schon die Reduktionsregel: Wenn wir echte Zwillinge finden, dann können wir sie zu einem Knoten verschmelzen. Das ändert die Zahl der benötigten Cliquen für Edge Clique Cover nicht. Wenn es ein Edge Cover gibt in dem beide Knoten in verschiedenen Cliquen abgedeckt werden, kann man einfach einen der Knoten zu den Cliquen des anderen hinzufügen und aus den ursprünglichen Cliquen entfernen. Da die Knoten dieselbe Nachbarschaft haben bleiben dadurch alle Kanten abgedeckt.
+
+Betrachten wir nun die maximale Größe des Kerns. Gegeben sei eine Instanz $(G=(V,E),k)$ von Edge Clique Cover bei der wir die obige Reduktionsregel bis zur Erschöpfung angewendet haben. Es gibt also keine echten Zwillinge mehr. Desweiteren sei $|V| > 2^k$. Angenommen es gibt nun noch ein Edge Clique Cover mit genau $k$ Cliquen.
+
+Für jeden Knoten $v \in V$ gibt es nun genau $2^k$ Möglichkeiten in einer Teilmenge der $k$ Cliquen enthalten zu sein. Nach dem Taubenschlagprinzip muss es also zwei Knoten $v_1, v_2$ geben, die in genau denselben Cliquen enthalten sind.
+
+Das bedeutet für $v_1, v_2$, dass $N(v_1) \cup \{v_1\} = N(v_2) \cup \{v_2\}$. Die Knote müssen echte Zwillinge sein, da alle Kanten durch die Cliquen abgedeckt werden und sie in denselben Cliquen enthalten sind. Das ist ein Widerspruch zur Konstruktion unserer Instanz.
+
+Demnach muss also jede Lösbare Instanz von Edge Clique Cover eine Größe von $\leq 2^k$ haben, wenn es keine echten Zwillinge mehr gibt. D.h. der Kern hat eine maximale Größe von $2^k$.
+
+Die Laufzeit einer Anwendung der Reduktionsregel ist in $O(n^2 \cdot m)$. Für jedes Knotenpaar muss überprüft werden, ob die Zwillingsbedingung erfüllt ist. Insgesamt kann es maximal $n$ viele Anwendungen geben, da sich die Knotenanzahl nach jeder Anwendung um genau 1 reduziert.
+
 \end{document}
