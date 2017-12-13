@@ -116,4 +116,33 @@ Demnach muss also jede Lösbare Instanz von Edge Clique Cover eine Größe von $
 
 Die Laufzeit einer Anwendung der Reduktionsregel ist in $O(n^2 \cdot m)$. Für jedes Knotenpaar muss überprüft werden, ob die Zwillingsbedingung erfüllt ist. Insgesamt kann es maximal $n$ viele Anwendungen geben, da sich die Knotenanzahl nach jeder Anwendung um genau 1 reduziert.
 
+\exercise{Baumweite approximieren}
+
+Wir haben für ``Lower Bounds'' die Algorithmen 1-4 des Papers und für ``Upper Bounds'' den Algorithmus 1 des Papers umgesetzt.
+
+\begin{table}[h]
+	\caption{Lower Bounds}
+	\begin{tabular}{l c c c r}
+		Algorithmus & Graph 1 & Graph 2 & Graph 3 & Graph 4 \\
+		MMD & 42 & 7 & 3 & 12 \\
+		d2D & 42 & 8 & 4 & 12 \\
+		MMD+(min-d) & 42 & 8 & 5 & 15 \\
+		MMD+(max-d) & 42 & 8 & 4 & 13 \\
+		MMD+(least-c) & 42 & 9 & 5 & 14 \\
+		LBN(mmd) & 42 & 7 & 3 & 13 \\
+		LBN(d2D) & 42 & 8 & 4 & 14 \\
+		LBN(mmd\_plus(min-d)) & 42 & 8 & 5 & 16 \\
+		LBN(mmd\_plus(max-d)) & 42 & 8 & 4 & 13 \\
+		LBN(mmd\_plus(least-c)) & 42 & 9 & 5 & 14 \\
+	\end{tabular}
+\end{table}
+
+\begin{table}[h]
+	\caption{Upper Bounds}
+	\begin{tabular}{lcccr}
+		Algorithmus & Graph 1 & Graph 2 & Graph 3 & Graph 4 \\
+		Fill & 90 & 131 & 121 & 150 \\
+	\end{tabular}
+\end{table}
+
 \end{document}
