@@ -1,0 +1,40 @@
+\input{preamble}
+
+\DeclareMathOperator{\vc}{vc}
+
+\begin{document}
+
+\solution{5}{Sören Tietböhl, Tobias Stengel}
+
+\exercise{\textsc{Max Sat}}
+
+\subexercise
+
+Um Hall's Theorem anwenden zu können, muss ein bipartiter Graph \linebreak $G=(V_1 \cup V_2,E)$ vorliegen. $V_1$ ist dabei die Menge der Variablen aus $\varphi$ und $V_2$ die Menge der Klauseln aus $\varphi$. Sei $v_1 \in V_1$ und $v_2 \in V_2$. Es existiert eine Kante $e \in E$, wenn die Variable $v_1$ in der Klausel $v_2$ vorkommt (original oder negiert). Das heißt das Setzen von $v_1$ entscheidet, ob die Klausel $v_2$ erfüllt wird.
+
+\textbf{Reduzierung der Variablenanzahl auf maximal $k$:} Angenommen es gilt $n \leq k$. Dann gibt es bereits weniger als $k$ Variablen und somit muss die Anzahl nicht weiter reduziert werden. 
+
+Interessant ist also der Fall, wenn es noch mehr als $k$ Variablen gibt, also wenn gilt $|V_1| > k$. In dem bipartiten Graphen kann nun geprüft werden, ob es ein Matching gibt, welches alle Knoten von $V_1$ abdeckt. Gibt es ein solches Matching, gibt es auch mindestens $k$ Klauseln, die erfüllt werden können. Grund dafür ist, dass wir noch mehr als $k$ Variablen haben (sonst müssten wir nicht weiter reduzieren). Jede dieser Variablen kann so gesetzt werden, dass sie mindestens eine Klausel, nämlich ihren Matchingpartner, erfüllt. Also können $\geq n$ Klauseln erfüllt werden, die Instanz ist lösbar. 
+
+Wird kein solches Matching gefunden, besagt Hall's Theorem, dass eine inklusionsminimale Menge $X\subset V_1$ gibt, sodass $|X| > |N(X)|$ gilt. Dann kann folgende Reduktionsregel angewandt werden:
+
+\begin{itemize}
+\item[Reduktionsregel 1:] Wähle ein beliebiges Element aus $x \in X$ und entferne $x$ aus $V_1$. Diese Regel ist sicher, da sie die Anzahl der erfüllbaren Klauseln nicht verändert. Da $X$ inklusionsminimal ist, wird jede der Klauseln, die mit durch das Setzen von $x$ erfüllt werden konnte, immernoch von anderen Variablen aus $X$ abgedeckt. Die Anzahl der erfüllbaren Klauseln bleibt also unverändert, die Variablenanzahl wird um 1 reduziert.
+\end{itemize}
+
+Mithilfe dieser Reduktionsregel, kann iterativ die Anzahl der Variablen auf maximal $k$ reduziert werden. Kann die Regel nicht mehr angewandt werden, obwohl $n>k$ gilt, gibt es im bipartiten Graph ein Matching, was bedeutet, dass die Instanz in jedem Fall lösbar ist.
+
+\textbf{Reduzierung der Klauselzahl auf maximal $2k$:} Sei eine Variablenbelegung gegeben. Vereinigt man die Menge der mit dieser Belegung erfüllten Klauseln mit der Menge der von der komplementären Belegung erfüllten Klauseln, erhält man die Menge aller Klauseln. Bei $m$ Klauseln steht also fest, dass eine Variablenbelegung oder ihr Komplement mindestens $\frac{m}{2}$ Klauseln erfüllen. Ist $m > 2k$, so werden von einer Belegung oder ihrem Komplement mindestens $\frac{2k}{2}=k$ Klauseln erfüllt, die Instanz ist also lösbar. Gilt $m \leq 2k$, muss die Klauselanzahl nicht weiter reduziert werden.
+
+\subexercise
+
+
+
+\exercise{\textsc{3-Hitting Set}}
+
+
+
+\exercise{\textsc{Vertex Cover} mit beschränkten Suchbäumen}
+
+
+\end{document}
