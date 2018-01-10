@@ -29,10 +29,29 @@ Mithilfe dieser Reduktionsregel, kann iterativ die Anzahl der Variablen auf maxi
 \subexercise
 
 
-
 \exercise{\textsc{3-Hitting Set}}
 
+Damit eine Instanz lösbar ist, muss mindestens ein Element aus jeder Menge $S_i$ zu $H$ hinzugefügt worden sein. Man kann also alle Mengen $S_i$ durchgehen und effiziente Elemente zu $H$ hinzufügen. Gibt es mehrere Möglichkeiten Elemente zu $H$ hinzuzufügen, wird verzweigt und mehrere Lösungen werden weiterverfolgt. 
 
+Beim \textsc{3-Hitting Set} gilt $|S_i| \leq 3$. Daher werden zunächst drei Fälle unterschieden:
+
+\begin{itemize}
+\item[Fall 1:]$\exists S_i: |S_i|=1$. Beinhaltet eine Menge $S_i$ nur ein Element, so muss dieses Element zu $H$ hinzugefügt werden, da sonst $H \cap S_i = \emptyset$ gilt. Das Element wird also zu $H$ hinzugefügt und es muss nur eine Lösung weiter verfolgt werden.
+
+\item[Fall 2:]$\exists S_i: |S_i|=2$. Beinhaltet eine Menge $S_i$ zwei Elemente, werden zwei Lösungen weiterverfolgt. In jeder dieser Lösungen wird je eines der beiden Elemente zu $H$ hinzugefügt und das andere nicht. Anschließend werden die restlichen Mengen betrachtet, wobei je ein Element weniger berücksichtigt werden muss. Der Verzweigungsvektor für diesen Fall ist also $(1,1)$, die Basis damit $b=2$.
+
+\item[Fall 3:]$\forall S_i: |S_i|=3$. Gibt es keine Menge mehr, die nur ein oder zwei Elemente enthält, enthalten alle übrigen Mengen drei Elemente. Nun kann man eine Mengen $S_x$ wählen und Schnittmengen mit anderen Mengen betrachten. Die Kardinalitäten der Schnittmengen führen zu folgender Fallunterscheidung
+
+\begin{itemize}
+\item[Fall 3.1:]$\exists S_y: |S_x \cap S_y| = 2$. Gibt es eine Menge, sodass die Schnittmenge mit $S_x$ die Kardinalität 2 hat, kann man entweder eines der beiden Elemente zu $H$ hinzufügen, oder die beiden Elemente zu $H$ hinzufügen, welche nicht in beiden Mengen vorkommen. Der Verzweigungsvektor ist also $(1,1,2)$, die Basis damit $b\approx 2,414$.
+
+\item[Fall 3.2:]$\exists S_y: |S_x \cap S_y| = 1$. Gibt es eine Menge, sodass die Schnittmenge mit $S_x$ die Kardinalität 1 hat, kann man dieses zu $H$ hinzufügen oder hat vier Möglichkeiten je eines der anderen beiden Elemente der einen Menge mit einem der anderen beiden Elemente der anderen Menge zu kombinieren und zu $H$ hinzuzufügen. Der Verzweigungsvektor ist also $(1,2,2,2,2)$, die Basis damit $b\approx 2,562$.
+
+\item[Fall 3.3:]$\forall S_y: |S_x \cap S_y| = 0$. Gibt es keine Menge, die ein Element mit $S_x$ gemeinsam hat, muss ein Element aus $S_x$ zu $H$ hinzugefügt werden. Da keines der Elemente in $S_x$ in einer anderen Menge vorkommt, kann einfach das erste Element gewählt werden. Es muss also nicht verzweigt werden und die Anzahl der zu betrachtenden Mengen verringert sich um 1.
+\end{itemize}
+\end{itemize}
+
+In jedem Schritt ist die Basis $b \leq 2,562$. Außerdem werden in jedem Schritt Elemente zu $H$ hinzugefügt, sodass mindestens eine weitere Menge $S_i$ abgedeckt wird. Also sind $\leq n$ Schritte notwendig, um alle Mengen abzuarbeiten. Der Algorithmus liegt also in $2,562^k \cdot n^{O(1)}$.
 
 \exercise{\textsc{Vertex Cover} mit beschränkten Suchbäumen}
 
