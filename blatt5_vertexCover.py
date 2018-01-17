@@ -172,6 +172,13 @@ def get_least_similar_vertex(neighbours):
         raise Exception("Uncorrect index: {}".format(vertex_index))
     return neighbours[vertex_index]
     
+def get_list_intersection(list1, list2):
+    return_list = list()
+    for e in list1:
+        if e in list2:
+            return_list.append(e)
+    return return_list
+    
 def read_graph(file_name):
     with open(file_name, 'rb') as f:
         edges = list()
@@ -226,9 +233,9 @@ def apply_rule_two(graph, vc, vertex):
             graph1.remove_vertex(neighbour_b1)
             vc1 = vertex_cover(graph1, vc1)
             
-            reversed_neighbour_list_a = neighbour_a2.neighbours_list
+            reversed_neighbour_list_a = neighbour_a2.neighbours_list[:]
             reversed_neighbour_list_a.reverse()
-            reversed_neighbour_list_b = neighbour_b2.neighbours_list
+            reversed_neighbour_list_b = neighbour_b2.neighbours_list[:]
             reversed_neighbour_list_b.reverse()
             
             for neighbour in reversed_neighbour_list_a:
@@ -249,8 +256,105 @@ def apply_rule_three(graph, vc, vertex):
     neighbour_a = vertex.neighbours_list[0]
     neighbour_b = vertex.neighbours_list[1]
     neighbour_c = vertex.neighbours_list[2]
+    vc1 = vc[:]
+    graph1 = graph.copy()
+    neighbour_a1 = graph1.get_vertex(neighbour_a.vid)
+    neighbour_b1 = graph1.get_vertex(neighbour_b.vid)
+    neighbour_c1 = graph1.get_vertex(neighbour_c.vid)
+    vc2 = vc[:]
+    graph2 = graph.copy()
+    vertex2 = graph2.get_vertex(vertex.vid)
+    neighbour_a2 = graph2.get_vertex(neighbour_a.vid)
+    neighbour_b2 = graph2.get_vertex(neighbour_b.vid)
+    neighbour_c2 = graph2.get_vertex(neighbour_c.vid)
+    reversed_neighbour_list_b2 = neighbour_b2.neighbours_list[:]
+    reversed_neighbour_list_b2.reverse()
+    reversed_neighbour_list_c2 = neighbour_c2.neighbours_list[:]
+    reversed_neighbour_list_c2.reverse()
     
-    return
+    if len(get_list_intersection(neighbour_a.neighbours_list, neighbour_b.neighbours_list)) == 1 and len(get_list_intersection(neighbour_b.neighbours_list, neighbour_c.neighbours_list)) == 1 and len(get_list_intersection(neighbour_c.neighbours_list, neighbour_a.neighbours_list)) == 1:
+        vc3 = vc[:]
+        graph3 = graph.copy()
+        vertex3 = graph3.get_vertex(vertex.vid)
+        neighbour_a3 = graph3.get_vertex(neighbour_a.vid)
+        reversed_neighbour_list_a3 = neighbour_a3.neighbours_list[:]
+        reversed_neighbour_list_a3.reverse()
+        
+        vc1.append(neighbour_a1.vid)
+        vc1.append(neighbour_b1.vid)
+        vc1.append(neighbour_c1.vid)
+        graph1.remove_vertex(neighbour_a1)
+        graph1.remove_vertex(neighbour_b1)
+        graph1.remove_vertex(neighbour_c1)
+        vc1 = vertex_cover(graph1, vc1)
+        
+        vc2.append(neighbour_a.vid)
+        for neighbour in reversed_neighbour_list_b2:
+            if neighbour is not vertex2:
+                vc2.append(neighbour.vid)
+                graph2.remove_vertex(neighbour)
+        for neighbour in reversed_neighbour_list_c2:
+            vc2.append(neighbour.vid)
+            graph2.remove_vertex(neighbour)
+        vc2 = vertex_cover(graph2, vc2)
+        
+        for neighbour in reversed_neighbour_list_a3:
+            vc3.append(neighbour.vid)
+            graph3.remove_vertex(neighbour)
+        vc3 = vertex_cover(graph3, vc3)
+       
+        return_vc = vc1
+        if len(vc2) < len(return_vc):
+            return_vc = vc2
+        if len(vc3) < len(return_vc):
+            return_vc = vc3      
+        return return_vc
+        
+    elif neighbour_a in neighbour_b.neighbours_list:
+        vc1.append(neighbour_a1.vid)
+        vc1.append(neighbour_b1.vid)
+        vc1.append(neighbour_c1.vid)
+        graph1.remove_vertex(neighbour_a1)
+        graph1.remove_vertex(neighbour_b1)
+        graph1.remove_vertex(neighbour_c1)
+        vc1 = vertex_cover(graph1, vc1)
+        
+        for neighbour in reversed_neighbour_list_c2:
+            vc2.append(neighbour.vid)
+            graph2.remove_vertex(neighbour)
+        vc2 = vertex_cover(graph2, vc2)
+        
+        if len(vc1) < len(vc2):
+            return vc1
+        return vc2
+        
+    else:
+        vc1.append(neighbour_a1.vid)
+        vc1.append(neighbour_b1.vid)
+        vc1.append(neighbour_c1.vid)
+        graph1.remove_vertex(neighbour_a1)
+        graph1.remove_vertex(neighbour_b1)
+        graph1.remove_vertex(neighbour_c1)
+        vc1 = vertex_cover(graph1, vc1)
+        
+        common_neighbours = get_list_intersection(neighbour_a2.neighbours_list, neighbour_b2.neighbours_list)
+        if len(common_neighbours) == 1:
+            common_neighbours = get_list_intersection(neighbour_a2.neighbours_list, neighbour_c2.neighbours_list)
+        if len(common_neighbours) == 1:
+            common_neighbours = get_list_intersection(neighbour_b2.neighbours_list, neighbour_c2.neighbours_list)
+        common_neighbour = common_neighbours[0]
+        if(common_neighbour == vertex2)
+            common_neighbour = common_neighbours[1]
+        vc2.append(vertex2.vid)
+        vc2.append(common_neighbour.vid)
+        graph2.remove_vertex(vertex2)
+        graph2.remove_vertex(common_neighbour)
+        vc2 = vertex_cover(graph2, vc2)
+        
+        if len(vc1) < len(vc2):
+            return vc1
+        return vc2
+        
        
 def apply_rule_four_or_five(graph, vc, vertex):
     vc1 = vc[:]
@@ -278,6 +382,9 @@ def apply_rule_four_or_five(graph, vc, vertex):
 def vertex_cover(graph, vc=list()):
     if graph.vertices == list():
         return vc
+        
+    print vc
+    print graph
         
     min_degree_vertex = graph.get_minimum_degree_vertex()
     max_degree_vertex = graph.get_maximum_degree_vertex()
