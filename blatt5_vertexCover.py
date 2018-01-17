@@ -204,15 +204,10 @@ def apply_rule_two(graph, vc, vertex):
         return vertex_cover(graph, vc)
     else:
         if neighbour_a.get_degree() == 2 and neighbour_b.get_degree() == 2:
-            common_neighbour = neighbour_a.neighbours_list[0]
-            if common_neighbour == vertex:
-                common_neighbour = neighbour_a.neighbours_list[1]
-            vc.append(vertex.vid)
-            vc.append(common_neighbour.vid)
-            graph.remove_vertex(vertex)
-            graph.remove_vertex(neighbour_a)
-            graph.remove_vertex(neighbour_b)
-            graph.remove_vertex(common_neighbour)
+            vc.append(neighbour_a.neighbours_list[0].vid)
+            vc.append(neighbour_a.neighbours_list[1].vid)
+            graph.remove_vertex(neighbour_a.neighbours_list[1])
+            graph.remove_vertex(neighbour_a.neighbours_list[0])
             return vertex_cover(graph, vc)
         else:
             vc1 = vc[:]
@@ -231,18 +226,18 @@ def apply_rule_two(graph, vc, vertex):
             graph1.remove_vertex(neighbour_b1)
             vc1 = vertex_cover(graph1, vc1)
             
-            neighbour_a_neighbour = neighbour_a2.neighbours_list[0]
-            if neighbour_a_neighbour == vertex2:
-                neighbour_a_neighbour = neighbour_a2.neighbours_list[1]
-            neighbour_b_neighbour = neighbour_b2.neighbours_list[0]
-            if neighbour_b_neighbour == vertex2:
-                neighbour_b_neighbour = neighbour_b2.neighbours_list[1]
-            vc2.append(vertex2.vid)
-            vc2.append(neighbour_a_neighbour.vid)
-            vc2.append(neighbour_b_neighbour.vid)
-            graph2.remove_vertex(vertex2)
-            graph2.remove_vertex(neighbour_a_neighbour)
-            graph2.remove_vertex(neighbour_b_neighbour)
+            reversed_neighbour_list_a = neighbour_a2.neighbours_list
+            reversed_neighbour_list_a.reverse()
+            reversed_neighbour_list_b = neighbour_b2.neighbours_list
+            reversed_neighbour_list_b.reverse()
+            
+            for neighbour in reversed_neighbour_list_a:
+                if neighbour is not vertex2:
+                    vc2.append(neighbour.vid)
+                    graph2.remove_vertex(neighbour)
+            for neighbour in reversed_neighbour_list_b:
+                vc2.append(neighbour.vid)
+                graph2.remove_vertex(neighbour)
             vc2 = vertex_cover(graph2, vc2)
             
             if len(vc1) < len(vc2):
