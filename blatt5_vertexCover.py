@@ -1,3 +1,4 @@
+#!/bin/python2
 import os, sys, copy
 
 class Vertex:
@@ -343,7 +344,7 @@ def apply_rule_three(graph, vc, vertex):
         if len(common_neighbours) == 1:
             common_neighbours = get_list_intersection(neighbour_b2.neighbours_list, neighbour_c2.neighbours_list)
         common_neighbour = common_neighbours[0]
-        if(common_neighbour == vertex2)
+        if(common_neighbour == vertex2):
             common_neighbour = common_neighbours[1]
         vc2.append(vertex2.vid)
         vc2.append(common_neighbour.vid)
