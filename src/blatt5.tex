@@ -55,5 +55,13 @@ In jedem Schritt ist die Basis $b \leq 2,562$. Außerdem werden in jedem Schritt
 
 \exercise{\textsc{Vertex Cover} mit beschränkten Suchbäumen}
 
+Implementiert wurden die  fünf in der Vorlesung beschriebenen Regeln zur Verzweigung der Lösungsfindung.
+
+In \textit{vertex\_cover} werden zunächst der minimale und maximale Grad des aktuellen Graphen ermittelt, um anhand dieser Werte zu entscheiden, welche Regel als nächstes angewandt wird. Zunächst wird geprüft, ob Regel 1 angewandt werden kann, dann nacheinander Regel 2, 3 und 4 bzw. 5. Kann eine Regel angewandt werden, wird dies getan und die mögliche Anwendung anderer Regeln vernachlässigt. Regel 4 und 5 aus den Folien wurden zusammengefasst, da jeweils gleich verzweigt wird: einmal wird der Knoten zum Vertex-Cover hinzugefügt und einmal alle seine Nachbarn. 
+
+Innerhalb der Regeln werden zunächst zusammenhänge zwischen den Nachbarn des aktuellen Knotens ermittelt (zum Beispiel, ob diese durch eine Kante verbunden sind), um so den genauen Unterfall zu ermitteln. Dann werden gemäß der Folien (wenn nötig) mehrere Teilberechnungen gestartet, indem mehrere Aufrufe von \textit{vertex\_cover} mit unterschiedlichen Restgraphen und bisherigen Vertex-Covern aufgerufen. Je nachdem Welche Teillösung das kleinere Vertex-Cover zurückgibt, wird dieses Vertex-Cover von der aktuellen Regel zurückgegeben.
+
+Einige Regeln wurden auf kleinen Graphen getestet, wo sie das richtige Ergebnis lieferten. Bei komplexeren Graphen lief das Programm nicht durch, weshalb auch keine Lösungen für die Graphen abgegeben wurden. Die Vermutung ist, dass das Löschen von Knoten aus dem Graphen nicht korrekt funktioniert, da es in späteren Regelanwendungen noch Knoten/Kanten gibt, die schon im Vertex-Cover sind und damit aus dem Graphen gelöscht worden sollten.
+
 
 \end{document}
