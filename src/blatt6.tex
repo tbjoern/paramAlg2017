@@ -9,7 +9,7 @@
 \exercise{$d$-\textsc{Hitting Set}}
 Sei eine $d$-\textsc{Hitting Set} Instanz gegeben. Zunächst kann ein Hitting Set $H$ der Größe $\leq k$ gefunden werden, indem man nur die ersten $k$ Mengen betrachtet und jeweils ein Element dieser $k$ Mengen zu $H$ hinzugefügt wird. Nun kann schrittweise ein neues Element $S_i$ zur Betrachtung hinzugenommen werden und davon ein Element zu $H$ hinzugefügt werden. Dann erhält man ein Hitting Set für $k+1$ Elemente, welches die Größe $k+1$ hat. Kann man dieses Hitting Set nun mittels eines Disjoint-Algorithmus auf die Größe $k$ reduzieren, kann man mittels wiederholtem Hinzufügen und Anwenden des Disjoint-Algorithmus die Instanz für alle $S_i$ Mengen ($1 \leq i \leq n$) lösen und erhält ein Hitting Set $H$ mit $|H| \leq k$.
 
-Ziel des Disjoint-Algorithmus ist es, bei gegebener Instanz und gegebenem Hitting Set $H$ der Größe $k+1$ ein Hitting Set $H^\prime$ der Größe $k$ zu finden, ohne bestimmte Elemente aus $H$ zu benutzen. Dazu rät man zunächst eine Teilmenge von zu benutzenden Elementen aus $H$, man unterteilt $H$ damit in zu benutzende und nicht zu benutzende Elemente für $H^\prime$. Da $H$ ein Hitting Set ist, gibt es in jeder Menge $S_i$ ein Element aus $H$. Daher kann pro Menge $S_i$ wie folgt verfahren werden:
+Ziel des Disjoint-Algorithmus ist es, bei gegebener Instanz und gegebenem Hitting Set $H$ der Größe $k+1$ ein Hitting Set $H^\prime$ der Größe $k$ zu finden, ohne bestimmte Elemente aus $H$ zu benutzen. Dazu rät man zunächst eine Teilmenge von zu benutzenden Elementen aus $H$, diese nennen wir $X$. Man unterteilt $H$ damit in zu benutzende ($X$) und nicht zu benutzende Elemente ($Y = H \setminus X$) für $H^\prime$. Da $H$ ein Hitting Set ist, gibt es in jeder Menge $S_i$ ein Element aus $H$. Daher kann pro Menge $S_i$ wie folgt verfahren werden:
 
 \begin{itemize}
 \item Enthält $S_i$ ein Element aus $H$, welches als zu benutzend markiert ist, kann die Menge ignoriert werden, da sie bereits ein Element enthält, welches auch in $H^\prime$ vorkommt. $S_i$ wird dann also schon vom Hitting Set $H^\prime$ abgedeckt.
@@ -18,11 +18,17 @@ Ziel des Disjoint-Algorithmus ist es, bei gegebener Instanz und gegebenem Hittin
 
 \end{itemize}
 
-Das heißt alle Mengen $S_i$ sind entweder schon abgedeckt oder müssen mit einer um 1 verringerten Kardinalität betrachtet werden. Statt eines $d$-\textsc{Hitting Sets} wird also ein $d$-1-\textsc{Hitting Set} gesucht. 
+Das heißt alle Mengen $S_i$ sind entweder schon abgedeckt oder müssen mit einer um 1 verringerten Kardinalität betrachtet werden. Statt eines $d$-\textsc{Hitting Sets} wird also ein $d$-1-\textsc{Hitting Set} gesucht.
 
-Fügt man nun eine neue Menge $S_i$ hinzu, kann dieser Schritt erneut ausgeführt werden. Damit wird $d$ immer weiter reduziert, bis irgendwann $d=2$ gilt. Betrachtet man die Sets einer $2$-\textsc{Hitting Set}-Instanz als eine Kante und die beiden Elemente der Sets als Knoten, kann das $2$-\textsc{Hitting Set} auch als Vertex Cover dargestellt werden, da pro existierender Kante (Menge $S_i$) mindestens einer der beiden Vertices (Elemente von $S_i$) gewählt werden muss. In der Vorlesung (Foliensatz 10) wird ein Algorithmus vorgestellt, der \textsc{Vertex Cover} mit Lösungsgröße $k$ als Paramiter in $1.342^k \cdot n^{O(1)}$ löst. 
+Wir können nun den gesamten Algorithmus rekursiv auf die $d$-1-\textsc{Hitting Set} Instanz anwenden um eine Lösung für den Disjoint-Algorithmus zu bekommen. Genauer gesagt suchen wir ein $d$-1-\textsc{Hitting Set} der Größe $k^\prime = k - |X|$ in den verbleibenden Mengen $S_i$.
+Die Laufzeit von diesem Rekusiven Aufruf ist in $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c)$, wobei $\alpha^{k^\prime} \cdot n^c$ die Laufzeit des Subalgorithmus ist. 
+
+%Fügt man nun eine neue Menge $S_i$ hinzu, kann dieser Schritt erneut ausgeführt werden. Damit wird $d$ immer weiter reduziert, bis irgendwann $d=2$ gilt.
+Betrachtet man die Sets einer $2$-\textsc{Hitting Set}-Instanz als eine Kante und die beiden Elemente der Sets als Knoten, kann das $2$-\textsc{Hitting Set} auch als Vertex Cover dargestellt werden, da pro existierender Kante (Menge $S_i$) mindestens einer der beiden Vertices (Elemente von $S_i$) gewählt werden muss. In der Vorlesung (Foliensatz 10) wird ein Algorithmus vorgestellt, der \textsc{Vertex Cover} mit Lösungsgröße $k$ als Paramiter in $1.342^k \cdot n^{O(1)}$ löst. 
 
 Nutzt man diesen Algorithmus für das Lösen von $3$-\textsc{Hitting Set}, kann der Disjoint-Algorithmus in $1.342^k \cdot n^c$ gelöst werden. Das Lemma aus der Vorlesung sagt, dass dann ein Compressions-Algorithmus für das Problem in $O((k+1)(1+1.342)^k \cdot n^c)$ gelöst werden kann. Der $(k+1)$-Faktor kann ignoriert werden, da $k+1$ in $d$ liegt und $d$ konstant ist. Damit ergibt sich eine Laufzeit von $2.342^k \cdot n^{O(1)}$.
+
+Mit dieser Beobachtung ergibt sich nun für den gesamten Algorithmus eine Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$. Wenn wir in der obigen Formel $\alpha$ durch $(d-1)-0.658$ ersetzen erhalten wir $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c) = O((k^\prime+1)(1+(d-1)-0.658)^{k^\prime} \cdot n^c) = O((k^\prime+1)(d-0.658)^{k^\prime} \cdot n^c)$. Mit $k^\prime < k$ können wir auch das $k^\prime + 1$ weglassen und erhalten insgesamt $(d-0.658)^k \cdot n^{O(n)}$.
 
 %todo: Schritt zu (d-0.658)^k * n^O(n)
 
