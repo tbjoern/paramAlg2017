@@ -21,14 +21,24 @@ Ziel des Disjoint-Algorithmus ist es, bei gegebener Instanz und gegebenem Hittin
 Das heißt alle Mengen $S_i$ sind entweder schon abgedeckt oder müssen mit einer um 1 verringerten Kardinalität betrachtet werden. Statt eines $d$-\textsc{Hitting Sets} wird also ein $d$-1-\textsc{Hitting Set} gesucht.
 
 Wir können nun den gesamten Algorithmus rekursiv auf die $d$-1-\textsc{Hitting Set} Instanz anwenden um eine Lösung für den Disjoint-Algorithmus zu bekommen. Genauer gesagt suchen wir ein $d$-1-\textsc{Hitting Set} der Größe $k^\prime = k - |X|$ in den verbleibenden Mengen $S_i$.
-Die Laufzeit von diesem Rekusiven Aufruf ist in $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c)$, wobei $\alpha^{k^\prime} \cdot n^c$ die Laufzeit des Subalgorithmus ist. 
+%Die Laufzeit von diesem Rekusiven Aufruf ist in $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c)$, wobei $\alpha^{k^\prime} \cdot n^c$ die Laufzeit des Subalgorithmus ist. 
 
 %Fügt man nun eine neue Menge $S_i$ hinzu, kann dieser Schritt erneut ausgeführt werden. Damit wird $d$ immer weiter reduziert, bis irgendwann $d=2$ gilt.
 Betrachtet man die Sets einer $2$-\textsc{Hitting Set}-Instanz als eine Kante und die beiden Elemente der Sets als Knoten, kann das $2$-\textsc{Hitting Set} auch als Vertex Cover dargestellt werden, da pro existierender Kante (Menge $S_i$) mindestens einer der beiden Vertices (Elemente von $S_i$) gewählt werden muss. In der Vorlesung (Foliensatz 10) wird ein Algorithmus vorgestellt, der \textsc{Vertex Cover} mit Lösungsgröße $k$ als Paramiter in $1.342^k \cdot n^{O(1)}$ löst. 
 
 Nutzt man diesen Algorithmus für das Lösen von $3$-\textsc{Hitting Set}, kann der Disjoint-Algorithmus in $1.342^k \cdot n^c$ gelöst werden. Das Lemma aus der Vorlesung sagt, dass dann ein Compressions-Algorithmus für das Problem in $O((k+1)(1+1.342)^k \cdot n^c)$ gelöst werden kann. Der $(k+1)$-Faktor kann ignoriert werden, da $k+1$ in $d$ liegt und $d$ konstant ist. Damit ergibt sich eine Laufzeit von $2.342^k \cdot n^{O(1)}$.
 
-Mit dieser Beobachtung ergibt sich nun für den gesamten Algorithmus eine Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$. Wenn wir in der obigen Formel $\alpha$ durch $(d-1)-0.658$ ersetzen erhalten wir $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c) = O((k^\prime+1)(1+(d-1)-0.658)^{k^\prime} \cdot n^c) = O((k^\prime+1)(d-0.658)^{k^\prime} \cdot n^c)$. Mit $k^\prime < k$ können wir auch das $k^\prime + 1$ weglassen und erhalten insgesamt $(d-0.658)^k \cdot n^{O(n)}$.
+Mit dieser Beobachtung ergibt sich nun für den gesamten Algorithmus eine Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$. Der Beweis dazu führen mit Induktion über $d$ durch.
+Den Induktionsanfang haben wir grade gesehen. Für $d = 2$ ergibt sich eine Laufzeit von $(1+1.342)^k \cdot n^c = (2-0.658)^k \cdot n^c $.
+
+Schauen wir uns nun den Schritt von $d-1$ nach $d$ an.
+
+Wir gehen wie oben beschrieben vor und benutzen den Kompressionsalgorithmus zusammen mit dem Disjoint-Algorithmus.
+Um die Fallunterscheidung durchzuführen brauchen wir Laufzeit $n \cdot d$ um einmal alle Mengen durchzuprüfen. Danach haben wir eine $d$-1-\textsc{Hitting Set} Instanz, mit $k^\prime = k - |X|$. Die Laufzeit davon ist nach Induktionsvorraussetzung $((d-1)-0.658)^{k^\prime} \cdot n^{O(n)}$. 
+Insgesamt hat der Disjoint-Algorithmus also eine Laufzeit von $((d-1)-0.658)^{k^\prime} \cdot n^{O(n)} + n \cdot d$ , wobei in $O$-Notation $n \cdot d$ vom Rest dominiert wird und wegfällt.
+
+Der Kompressionsalgorithmus liefert uns damit nach dem Lemma aus der Vorlesung eine Laufzeit von $O((k+1)(1+(d-1)-0.658)^k \cdot n^c) = O((k+1)(d-0.658)^k \cdot n^c)$.
+%Wenn wir in der obigen Formel $\alpha$ durch $(d-1)-0.658$ ersetzen erhalten wir $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c) = O((k^\prime+1)(1+(d-1)-0.658)^{k^\prime} \cdot n^c) = O((k^\prime+1)(d-0.658)^{k^\prime} \cdot n^c)$. Mit $k^\prime < k$ können wir auch das $k^\prime + 1$ weglassen und erhalten insgesamt $(d-0.658)^k \cdot n^{O(n)}$.
 
 %todo: Schritt zu (d-0.658)^k * n^O(n)
 
