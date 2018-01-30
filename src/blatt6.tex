@@ -51,6 +51,7 @@ Nun Fehlt noch der Schritt die Gesamte Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$
 \exercise{Matroide}
 
 \subexercise
+
 Ein transversaler Matroid ist ein Matroid, da er ein Unabhängigkeitssystem bildet und das Austauschargument gilt:
 
 \begin{itemize}
@@ -70,6 +71,22 @@ Ein transversaler Matroid ist ein Matroid, da er ein Unabhängigkeitssystem bild
 \end{itemize}
 
 Der Transversale Matroid ist also ein Unabhägigkeitssystem, für den die Austauscheigenschaft gilt. Damit ist er ein Matroid. 
+Hier das zweite Argument nochmal detailliert formal:
+
+Seien $A,B \subseteq L$ mit $|A| < |B|$, $A,B \in F$. Seien $A_r, B_r \subseteq R$ die Partnerknoten in einem beliebigen aber festen Matching für jeweils $A$ und $B$. $M_X \colon X \rightarrow X_r$ sei die Matchingfunktion für $X \in \{A,B\}$.
+
+\begin{enumerate}
+    \item $\exists x \in B \setminus A \colon M_B(x) \notin A_r$. Da der Partner von $x$ nicht in $A_r$ liegt, können wir $x$ einfach zu $A$ hinzufügen, sodass $A \cup \{x\}$ unabhängig bleibt.
+    \item $\nexists x \in B \setminus A \colon M_B(x) \notin A_r \Rightarrow \forall x \in B \setminus A \, \exists x^\prime \in A \colon M_A(x^\prime) = M_B(x)$. Wenn ein $x$ aus Fall 1 nicht existiert, muss also jedes $x$ aus $B$ einen Partner haben, der im Matching von $A$ schon vergeben ist. Da $|A| < |B|$ gilt, folgt direkt:
+
+    $\exists x^* \in A \cap B \, \exists x^\prime B \setminus A \colon M_A(x^*) \neq M_B(x^*) \wedge M_A(x^*) = M_B(x^\prime)$. In Worten: es gibt ein $x^*$ im Schnitt von $A$ und $B$, das in den Matchings verschiedene Partner hat. Gleichzeitig gibt es ein $x^\prime$, welches im Matching von $B$ denselben Partner hat wie $x^*$ im Matching von $A$.
+
+    Diese Aussage gilt, weil wir mit $A \setminus B$ alleine nicht alle Knoten aus $B \setminus A$ blockieren können, denn $|B|>|A|$.
+
+    Wir können jetzt einfach $x^\prime$ zu $A$ hinzufügen, denn um ein Matching für $A \cup \{x^\prime\}$ zu finden, nehmen wir das bisherige Matching von $A$ und setzen $M(x^*) = M_B(x^*)$ und $M(x^\prime) = M_A(x^*)$.
+
+    Es kann passieren, dass auch $M_B(x^*) \in A_r$. Da wir aber wissen, dass für alle Knoten aus $B \setminus A$ dasselbe gilt, muss es also schließlich einen Knoten in $A \cap B$ geben, für den das nicht passiert, denn $|A| < |B|$. Dadurch entsteht ein augmentierender Pfad, mit einem Endpunkt in $L$ und dem anderen in $R$. Wenn wir diesen Auflösen, können wir $A$'s Matching vergrößern.
+\end{enumerate}
 
 \subexercise
 
