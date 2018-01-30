@@ -43,11 +43,16 @@ Der Kompressionsalgorithmus liefert uns damit nach dem Lemma aus der Vorlesung e
 %todo: Schritt zu (d-0.658)^k * n^O(n)
 
 \how
-%todo
+Betrachtet man was passiert, wenn man den Disjoint-Algorithmus anwendet, erkennt man, dass einige Mengen nicht mehr betrachtet werden müssen, da sie bereits ein Element aus $X$ enthalten und somit vom Hitting-Set abgedeckt werden. Alle Mengen, für die das nicht zutrifft verringert sich die Größe um Eins. Grund dafür ist, dass das Element aus $H$ dann in $Y$ sein muss und damit nicht zum Hitting-Set hinzugefügt werden darf. Somit kann es auch aus der Menge $S_i$ entfernt werden, ohne Einfluss auf das Gesamtergebnis zu haben. Damit kann das $d$ reduziert werden. 
+
+Der Trick hierbei ist, bei $d=2$ zu erkennen, dass das Problem einer \textsc{VertexCover}-Instanz ähnelt (siehe Lösung). In der Vorlesung wurden einige Lösungen für \textsc{VertexCover} vorgestellt. Eine davon hatte die Laufzeit $1.342^k \cdot n^{O(1)}$, welches als Grundlage für die hier zu erreichende Laufzeit diente.
+
+Nun Fehlt noch der Schritt die Gesamte Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$ zu erreichen, welcher hier durch Induktion erklärt wurde.
 
 
 \exercise{Matroide}
 
+\subexercise
 Ein transversaler Matroid ist ein Matroid, da er ein Unabhängigkeitssystem bildet und das Austauschargument gilt:
 
 \begin{itemize}
@@ -55,10 +60,9 @@ Ein transversaler Matroid ist ein Matroid, da er ein Unabhängigkeitssystem bild
 
 \item Gilt $A \in F$ und $B \subset A$, so ist auch $B \in F$. Ist $A$ Matchbar, so ist auch die Teilmenge $B$ matchbar. Das Matching in $B$ beinhaltet alle Knoten aus $L$, die auch in $A$ existieren. Jeder dieser Knoten kann mit der gleichen Kante, die es im Matching für $A$ auch hatte mit einem Knoten aus $R$ verbunden werden, also ist $B$ auch matchbar.
 
-\item 
+\item ...
 \end{itemize}
 
-\subexercise
 \subexercise
 
 \exercise{Implementierung: \textsc{Feedback Vertex Set}}
