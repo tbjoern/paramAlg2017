@@ -26,7 +26,7 @@ Wir können nun den gesamten Algorithmus rekursiv auf die $d$-1-\textsc{Hitting 
 %Fügt man nun eine neue Menge $S_i$ hinzu, kann dieser Schritt erneut ausgeführt werden. Damit wird $d$ immer weiter reduziert, bis irgendwann $d=2$ gilt.
 Betrachtet man die Sets einer $2$-\textsc{Hitting Set}-Instanz als eine Kante und die beiden Elemente der Sets als Knoten, kann das $2$-\textsc{Hitting Set} auch als Vertex Cover dargestellt werden, da pro existierender Kante (Menge $S_i$) mindestens einer der beiden Vertices (Elemente von $S_i$) gewählt werden muss. In der Vorlesung (Foliensatz 10) wird ein Algorithmus vorgestellt, der \textsc{Vertex Cover} mit Lösungsgröße $k$ als Paramiter in $1.342^k \cdot n^{O(1)}$ löst. 
 
-Nutzt man diesen Algorithmus für das Lösen von $3$-\textsc{Hitting Set}, kann der Disjoint-Algorithmus in $1.342^k \cdot n^c$ gelöst werden. Das Lemma aus der Vorlesung sagt, dass dann ein Compressions-Algorithmus für das Problem in $O((k+1)(1+1.342)^k \cdot n^c)$ gelöst werden kann. Der $(k+1)$-Faktor kann ignoriert werden, da $k+1$ in $d$ liegt und $d$ konstant ist. Damit ergibt sich eine Laufzeit von $2.342^k \cdot n^{O(1)}$.
+Nutzt man diesen Algorithmus für das Lösen von $3$-\textsc{Hitting Set}, kann der Disjoint-Algorithmus in $1.342^k \cdot n^c$ gelöst werden. Das Lemma aus der Vorlesung sagt, dass dann ein Compressions-Algorithmus für das Problem in $O((k+1)(1+1.342)^k \cdot n^c)$ gelöst werden kann. Es ergibt sich also eine Laufzeit von $(k+1) \cdot 2.342^k \cdot n^{O(1)}$.
 
 Mit dieser Beobachtung ergibt sich nun für den gesamten Algorithmus eine Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$. Der Beweis dazu führen mit Induktion über $d$ durch.
 Den Induktionsanfang haben wir grade gesehen. Für $d = 2$ ergibt sich eine Laufzeit von $(1+1.342)^k \cdot n^c = (2-0.658)^k \cdot n^c $.
@@ -37,17 +37,15 @@ Wir gehen wie oben beschrieben vor und benutzen den Kompressionsalgorithmus zusa
 Um die Fallunterscheidung durchzuführen brauchen wir Laufzeit $n \cdot d$ um einmal alle Mengen durchzuprüfen. Danach haben wir eine $d$-1-\textsc{Hitting Set} Instanz, mit $k^\prime = k - |X|$. Die Laufzeit davon ist nach Induktionsvorraussetzung $((d-1)-0.658)^{k^\prime} \cdot n^{O(n)}$. 
 Insgesamt hat der Disjoint-Algorithmus also eine Laufzeit von $((d-1)-0.658)^{k^\prime} \cdot n^{O(n)} + n \cdot d$ , wobei in $O$-Notation $n \cdot d$ vom Rest dominiert wird und wegfällt.
 
-Der Kompressionsalgorithmus liefert uns damit nach dem Lemma aus der Vorlesung eine Laufzeit von $O((k+1)(1+(d-1)-0.658)^k \cdot n^c) = O((k+1)(d-0.658)^k \cdot n^c)$.
+Der Kompressionsalgorithmus liefert uns damit nach dem Lemma aus der Vorlesung eine Laufzeit von $O((k+1)(1+(d-1)-0.658)^k \cdot n^c) = O((k+1)(d-0.658)^k \cdot n^c)$. Der $(k+1)$-Faktor wird vom $1^{O(n)}$ mit abgedeckt, falls er nur konstant oft ausgeführt wird (da $k <= n$, sonst wäre die Lösung trivial). Er wird jedes mal ausgeführt , wenn das $d$-Hitting Set zum $d-1$-Hitting Set reduziert wird. Da $d$ konstant ist, kann der Teil also auch nur konstant oft ausgeführt. Somit wird er vom $1^{O(n)}$-Teil inkludiert und kann ignoriert werden. Es ergibt sich also eine Laufzeit von $O((d-0.658)^k \cdot n^c)$.
 %Wenn wir in der obigen Formel $\alpha$ durch $(d-1)-0.658$ ersetzen erhalten wir $O((k^\prime+1)(1+\alpha)^{k^\prime} \cdot n^c) = O((k^\prime+1)(1+(d-1)-0.658)^{k^\prime} \cdot n^c) = O((k^\prime+1)(d-0.658)^{k^\prime} \cdot n^c)$. Mit $k^\prime < k$ können wir auch das $k^\prime + 1$ weglassen und erhalten insgesamt $(d-0.658)^k \cdot n^{O(n)}$.
-
-%todo: Schritt zu (d-0.658)^k * n^O(n)
 
 \how
 Betrachtet man was passiert, wenn man den Disjoint-Algorithmus anwendet, erkennt man, dass einige Mengen nicht mehr betrachtet werden müssen, da sie bereits ein Element aus $X$ enthalten und somit vom Hitting-Set abgedeckt werden. Alle Mengen, für die das nicht zutrifft verringert sich die Größe um Eins. Grund dafür ist, dass das Element aus $H$ dann in $Y$ sein muss und damit nicht zum Hitting-Set hinzugefügt werden darf. Somit kann es auch aus der Menge $S_i$ entfernt werden, ohne Einfluss auf das Gesamtergebnis zu haben. Damit kann das $d$ reduziert werden. 
 
 Der Trick hierbei ist, bei $d=2$ zu erkennen, dass das Problem einer \textsc{VertexCover}-Instanz ähnelt (siehe Lösung). In der Vorlesung wurden einige Lösungen für \textsc{VertexCover} vorgestellt. Eine davon hatte die Laufzeit $1.342^k \cdot n^{O(1)}$, welches als Grundlage für die hier zu erreichende Laufzeit diente.
 
-Nun Fehlt noch der Schritt die Gesamte Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$ zu erreichen, welcher hier durch Induktion erklärt wurde.
+Nun Fehlt noch der Schritt die Gesamte Laufzeit von $(d-0.658)^k \cdot n^{O(n)}$ zu erreichen, welcher hier durch Induktion erklärt wurde. Ein wichtiger Punkt ist hierbei noch das Wegdiskutieren des $(k+1)$-Faktors.
 
 
 \exercise{Matroide}
