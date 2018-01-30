@@ -60,8 +60,18 @@ Ein transversaler Matroid ist ein Matroid, da er ein Unabhängigkeitssystem bild
 
 \item Gilt $A \in F$ und $B \subset A$, so ist auch $B \in F$. Ist $A$ Matchbar, so ist auch die Teilmenge $B$ matchbar. Das Matching in $B$ beinhaltet alle Knoten aus $L$, die auch in $A$ existieren. Jeder dieser Knoten kann mit der gleichen Kante, die es im Matching für $A$ auch hatte mit einem Knoten aus $R$ verbunden werden, also ist $B$ auch matchbar.
 
-\item ...
+\item Seien $A$ und $B \in F$ mit $|A| < |B|$. Die Austauscheigenschaft gilt offensichtlich, wenn das Matching aus $B$ eine Kante enthält, welche keine Knoten aus $A$ abdeckt. Angenommen die Austauscheigenschaft gelte nicht offensichtlich. Dann müsste jede Kante $e$ aus dem Matching in $B$ mindestens einen Endpunkt in einem Element aus dem Matching aus $A$ haben. Da $|A| < |B|$ entstehen Strukturen wie in \autoref{fig_aug}. Dabei ist $A=\{a\}$ und $B=\{a,b\}$. Durchgezogenen Kanten kennzeichnen ein Matching in $B$, gestrichelte ein Matching in $A$. Es entsteht also ein augmentierender Pfad, ein Pfad der zwischen Matchingkanten aus $A$ und $B$ alterniert und mit Kanten aus $B$ anfängt und endet. Betrachtet man so einen Pfad, so gibt es ein Element, welches nicht in $A$ ist (im Beispiel der Knoten $b$). Dieser kann zu $A$ hinzugefügt werden. Das neue Matching in $A \cup \{b\}$ benutzt dann nicht mehr die alten Matchingkanten, sondern die jeweils anderen Kanten des augmentierenden Pfades. Es existiert also weiterhin ein Matching für $A\cup \{b\}$, die Austauscheigenschaft gilt also.
+
+\begin{figure}[h]
+\center
+\includegraphics[scale=0.5]{fig/aug}
+\caption{augmentierender Pfad}
+\label{fig_aug}
+\end{figure}
+
 \end{itemize}
+
+Der Transversale Matroid ist also ein Unabhägigkeitssystem, für den die Austauscheigenschaft gilt. Damit ist er ein Matroid. 
 
 \subexercise
 
