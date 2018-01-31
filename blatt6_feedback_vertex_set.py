@@ -75,6 +75,15 @@ def disjoint_feedback_vertex_set(fvs, graph):
     rest_graph = graph.subgraph(rest_nodes) # G[X]
     top_sort_rest = list(nx.topological_sort(rest_graph)) # G[X] sorted by order
 
+    # test which nodes from X keep the graph acyclic
+    acylic_positive = list()
+    for node in rest_nodes:
+        probe_nodes = list(rest_nodes)
+        probe_nodes.append(node)
+        probe_graph = graph.subgraph(probe_nodes)
+        if nx.is_directed_acyclic_graph(probe_graph):
+            acylic_positive.append(node)
+
     # get an ordering on X through G[Y]
     def key(node):
         if node in top_sort_rest:
@@ -82,6 +91,7 @@ def disjoint_feedback_vertex_set(fvs, graph):
         return node
 
     y_ordering = graph.copy()
+    y_ordering = y_ordering.subgraph(acylic_positive + fvs)
     for u in rest_nodes:
         for v in rest_nodes:
             if y_ordering.has_edge(u, v):
