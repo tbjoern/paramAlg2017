@@ -1,0 +1,44 @@
+\input{preamble}
+
+\DeclareMathOperator{\vc}{vc}
+
+\begin{document}
+
+\solution{7}{Sören Tietböhl und Tobias Stengel}
+
+\exercise{Induzierte Matchings}
+Um zu zeigen, dass \textsc{Induces Matching} W[1]-schwer ist, kann von \textsc{Independent Set} oder \textsc{Clique} reduziert werden. Kann man \textsc{Induces Matching} auf eines der beiden Probleme reduzieren, ist das Problem W[1]-vollständig.
+
+Um \textsc{Independent Set} auf \textsc{Induced Matching} zu reduzieren, wird jeder Knoten $v$ der \textsc{Independent Set}-Instanz zu einem Knotenpaar $\{v, v^\prime \}$ in der \textsc{Induced Matching}-Instanz. Zwischen diesen Beiden gibt es eine Kante. Außerdem beinhaltet die \textsc{Induces Matching}-Instanz Kanten zwischen $u$ und $v$, wenn es diese Kante auch in der urpsprünglichen Instanz gibt. 
+
+Im Independent Set haben zwei Knoten $u$ und $v$ keine Kante zueinander. In der \textsc{Induced Matching}-Instanz heißt das, dass $u$ und $v$ nur jeweils eine Kante besitzen (nämlich zu $u^\prime$ bzw. $v^\prime$). Somit können diese auch zum Induzierten Matching hinzugefügt werden. Gibt es also ein Independent Set der Größe $k$, gibt es auch ein induziertes Matching der Größe $k$.
+
+Beinhaltet das induzierte Matching nur Kanten zwischen Knotenpaaren $u$ und $u^\prime$, gilt trivial, dass wenn ein induziertes Matching der Größe $k$ existiert, es auch ein Independent Set derselben Größe gibt, da jede dieser Kanten genau ein Knoten in der ursprünglichen Instanz repräsentiert. Beinhaltet das Matching auch kanten zwischen $u$ und $v$, also Kanten, die es auch in der ursprünglichen Instanz gibt, gilt dies trotzdem. Grund dafür ist, dass man statt der Kante $u,v$ auch die Kante $u^\prime , v^\prime$ nehmen kann, da $u^\prime$ und $v^\prime$ nur von jeweils diesen Kanten abgedeckt werden. Es kann also nicht vorkommen, dass damit ein Knoten doppelt gematcht wird. Daher gilt, dass es ein Independent Set der Größe $k$ gibt, wenn auch ein induziertes Matching der Größe $k$ existiert.
+
+Damit ist gezeigt, dass \textsc{Induces Matching} zumindest W[1]-schwer ist. Um zu zeigen, dass das Problem auch W[1]-vollständig ist, wird es auf \textsc{Independent Set} reduziert. Hierzu enthält die \textsc{Independent Set}-Instanz ein Knoten für jede Kante in der ursprünglichen Instanz. Ein Kante existiert in der \textsc{Independent Set}-Instanz zwischen zwei Knoten $u$ und $v$, wenn die beiden Knoten in der ursprünglichen Instanz zwei Kanten repräsentieren, die einen Knoten gemeinsam haben.
+
+Kann man in der ursprünglichen Instanz ein induziertes Matching finden, gibt es auch ein Independent Set in der konstruierten Instanz. Grund dafür ist, dass die Kanten, die vom Matching ausgewählt wurden zu einem Knoten werden, der keine Kante haben kann, da es sonst zwei Kanten in der Ursprungsdistanz geben würde, die einen gleichen Endpunkt haben, diese Kanten dürften also nicht dem induzierten Matching hinzugefügt werden. Jede der Knoten, die eine solche Matchingkante repräsentieren, kann also dem Independent Set hinzugefügt werden. Gibt es also ein induziertes Matching der Größe $k$, so existiert auch ein Independent Set der Größe $k$.
+
+Die Umkehrung gilt ebenfalls. Alle Knoten des Independent Sets repräsentieren eine Kante. Da keine der Knoten miteinander verbunden sind, gibt es keine Knoten in der ursprungsdistanz, die an mehreren Kanten beteiligt sind. Jeder Knoten hat damit maximal eine Kante, an der er beteiligt ist. Er muss allerdings an einer Kante beteiligt sein, da es sonst keinen entsprechenden Knoten in der \textsc{Independent Set}-Instanz gäben würde. Jeder ausgewählt Knoten ist damit an genau einer Kante beteiligt. Gibt es ein Independent Set der Größe $k$, so gibt es auch ein gleichgroßes induziertes Matching.
+
+\textsc{Induced Matching} ist damit W[1]-vollständig. \hfill $\Box$
+
+\exercise{Funktionale Abhängigkeiten}
+\subexercise
+Um \textsc{Unique} auf $\textsc{FD}_{\textsc{FIXED}}$ zu reduzieren, wird der Instanz einfach eine neue Spalte $A$ hinzugefügt. Diese Spalte repräsentiert die fixe Spalte der $\textsc{FD}_{\textsc{FIXED}}$-Instanz. Alle Werte dieser Spalte werden unterschiedliche Werte gesetzt.
+
+Gibt es in der \textsc{Unique}-Instanz eine Lösung, bestimmt diese Lösung in der $\textsc{FD}_{\textsc{FIXED}}$-Instanz die Spalte $A$ funktional, da Uniques jede Spalte funktional bestimmen. 
+
+Gibt es eine Lösung für die $\textsc{FD}_{\textsc{FIXED}}$-Instanz, so muss diese auch in der ursprünglichen \textsc{Unique}-Instanz eine Lösung sein. Da die Spalte $A$ unterschiedliche Werte enthält, muss die Lösung nämlich ein Unique-Tupel sein. Wäre das nicht der Fall, würden zwei gleiche LHS-Tupel auf unterschiedliche Werte in $A$ verweisen. Sie bestimmen also $A$ nicht funktional.
+
+\subexercise
+Um $\textsc{FD}_{\textsc{FIXED}}$ auf \textsc{FD} zu reduzieren, werden der Instanz neue Zeilen hinzugefügt, die verhindern, dass eine andere Spalte außer $A$ funktional bestimmt werden kann. Dazu werden für jeden der $n$ möglichen RHS-Werte (außer $A$) zwei Zeilen eingefügt. die erste enthält beispielsweise nur Nullen. Die zweite Zeile hat eine Eins in der Spalte, für die die funktionale Bestimmbarkeit verhindert werden soll, die restlichen Werte der zweiten Spalte werden mit Nullen gefüllt. Egal welches LHS-Tupel man nun wählt, diese beiden Zeilen sorgen dafür, dass das Tupel einmal auf Null und einmal auf Eins abgebildet wird.
+
+Gibt es eine Lösung der $\textsc{FD}_{\textsc{FIXED}}$-Instanz, gibt es sie auch in der \textsc{FD}-Instanz, da die gleiche Spalte immer noch von allen Lösungen funktional bestimmt wird.
+
+Gibt es eine Lösung in der \textsc{FD}-Instanz, so ist diese auch eine Lösung in der $\textsc{FD}_{\textsc{FIXED}}$-Instanz, da durch die hinzugefügten Spalten verhindert wird, dass eine andere Spalte als $A$ auf der rechten Seite stehen kann.
+
+
+\exercise{Monotone Wert-1 Schaltkreise}
+
+\end{document}
